@@ -2,6 +2,8 @@
 
 namespace HyperShop.Controllers
 {
+    [Area("Customer")]
+
     public class CartController : Controller
     {
         public IActionResult Index()
