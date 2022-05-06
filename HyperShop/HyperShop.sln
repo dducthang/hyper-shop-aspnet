@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyperShop", "HyperShop.csproj", "{BE201A86-9F5A-4636-A641-3217E346B3EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperShop.Models", "..\HyperShop.Models\HyperShop.Models.csproj", "{7351AFA1-4583-49CE-BE84-DB657A6376D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperShop.DataAccess", "..\HyperShop.DataAccess\HyperShop.DataAccess.csproj", "{2ECF9F73-D145-4E6C-AECC-4ABB87C41AB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{BE201A86-9F5A-4636-A641-3217E346B3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE201A86-9F5A-4636-A641-3217E346B3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE201A86-9F5A-4636-A641-3217E346B3EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7351AFA1-4583-49CE-BE84-DB657A6376D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7351AFA1-4583-49CE-BE84-DB657A6376D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7351AFA1-4583-49CE-BE84-DB657A6376D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7351AFA1-4583-49CE-BE84-DB657A6376D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ECF9F73-D145-4E6C-AECC-4ABB87C41AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ECF9F73-D145-4E6C-AECC-4ABB87C41AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ECF9F73-D145-4E6C-AECC-4ABB87C41AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ECF9F73-D145-4E6C-AECC-4ABB87C41AB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
