@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyperShop", "HyperShop.csproj", "{BE201A86-9F5A-4636-A641-3217E346B3EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyperShop.Web", "HyperShop.Web.csproj", "{BE201A86-9F5A-4636-A641-3217E346B3EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperShop.Models", "..\HyperShop.Models\HyperShop.Models.csproj", "{7351AFA1-4583-49CE-BE84-DB657A6376D2}"
 EndProject

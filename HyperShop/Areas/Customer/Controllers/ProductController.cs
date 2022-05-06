@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace HyperShop.Controllers
+namespace HyperShop.Web.Areas.Customer.Controllers
 {
     public class ProductController : Controller
     {

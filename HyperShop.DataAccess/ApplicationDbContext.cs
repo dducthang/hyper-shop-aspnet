@@ -14,6 +14,7 @@ namespace HyperShop.DataAccess
         {
         }
 
-        public DbSet<HyperShop.Models.Category> Category { get; set; }
+        public DbSet<HyperShop.Models.Category> Categories { get; set; }
+        public DbSet<HyperShop.Models.Brand> Brands { get; set; }
     }
 }

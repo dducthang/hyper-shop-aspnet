@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HyperShop.Controllers
+namespace HyperShop.Web.Areas.Customer.Controllers
 {
     [Area("Customer")]
 

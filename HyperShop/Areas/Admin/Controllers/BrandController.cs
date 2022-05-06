@@ -11,22 +11,22 @@ using HyperShop.Models;
 namespace HyperShop.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class BrandController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoryController(ApplicationDbContext context)
+        public BrandController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/Category
+        // GET: Admin/Brand
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _context.Brands.ToListAsync());
         }
 
-        // GET: Admin/Category/Details/5
+        // GET: Admin/Brand/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +34,39 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var brand = await _context.Brands
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (brand == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(brand);
         }
 
-        // GET: Admin/Category/Create
+        // GET: Admin/Brand/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Category/Create
+        // POST: Admin/Brand/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Brand brand)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
+                _context.Add(brand);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(brand);
         }
 
-        // GET: Admin/Category/Edit/5
+        // GET: Admin/Brand/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +74,22 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var brand = await _context.Brands.FindAsync(id);
+            if (brand == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(brand);
         }
 
-        // POST: Admin/Category/Edit/5
+        // POST: Admin/Brand/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Brand brand)
         {
-            if (id != category.Id)
+            if (id != brand.Id)
             {
                 return NotFound();
             }
@@ -98,12 +98,12 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Update(brand);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!BrandExists(brand.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +114,10 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(brand);
         }
 
-        // GET: Admin/Category/Delete/5
+        // GET: Admin/Brand/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,30 +125,30 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var brand = await _context.Brands
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (brand == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(brand);
         }
 
-        // POST: Admin/Category/Delete/5
+        // POST: Admin/Brand/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
+            var brand = await _context.Brands.FindAsync(id);
+            _context.Brands.Remove(brand);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool BrandExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _context.Brands.Any(e => e.Id == id);
         }
     }
 }
