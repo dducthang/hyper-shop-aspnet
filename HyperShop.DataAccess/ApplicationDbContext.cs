@@ -16,5 +16,7 @@ namespace HyperShop.DataAccess
 
         public DbSet<HyperShop.Models.Category> Categories { get; set; }
         public DbSet<HyperShop.Models.Brand> Brands { get; set; }
+        public DbSet<HyperShop.Models.Color> Colors { get; set; }
+        public DbSet<HyperShop.Models.Size> Sizes { get; set; }
     }
 }
