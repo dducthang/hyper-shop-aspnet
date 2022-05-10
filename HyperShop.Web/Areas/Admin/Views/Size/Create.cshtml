@@ -1,7 +1,6 @@
 ﻿@model HyperShop.Models.Size
 
 
-size
 <div class="m-5">
 
 <h4>Size</h4>
@@ -28,4 +27,8 @@ size
 
 </div>
 
-<partial name="_ValidationScriptsPartial" />
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
