@@ -83,6 +83,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
 
                 _context.Products.Add(product);
                 _context.SaveChanges();
+                TempData["success"] = "Product created succesfully";
                 return RedirectToAction("Index");   
             }
             return View(product);
@@ -155,6 +156,8 @@ namespace HyperShop.Web.Areas.Admin.Controllers
 
                 _context.Products.Update(product);
                 _context.SaveChanges();
+                TempData["success"] = "Product edited succesfully";
+
                 return RedirectToAction("Index");
             }
             return View(product);
@@ -167,10 +170,21 @@ namespace HyperShop.Web.Areas.Admin.Controllers
         #region API CALLS
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
-            var productList = await _context.Products.ToListAsync();
+            var productList = _context.Products.ToList();
             return Json(new { data = productList });
+        }
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            if(product!= null)
+            {
+                _context.Products.Remove(product);
+                
+            }
+            return StatusCode(204);
         }
 
         #endregion

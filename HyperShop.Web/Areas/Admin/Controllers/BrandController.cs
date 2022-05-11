@@ -61,6 +61,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             {
                 _context.Add(brand);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Brand created succesfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(brand);
@@ -100,6 +101,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 {
                     _context.Update(brand);
                     await _context.SaveChangesAsync();
+                    TempData["success"] = "Brand edited succesfully";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -143,6 +145,8 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             var brand = await _context.Brands.FindAsync(id);
             _context.Brands.Remove(brand);
             await _context.SaveChangesAsync();
+            TempData["success"] = "Brand deleted succesfully";
+
             return RedirectToAction(nameof(Index));
         }
 

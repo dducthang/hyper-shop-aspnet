@@ -61,6 +61,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Category created succesfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -100,6 +101,8 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 {
                     _context.Update(category);
                     await _context.SaveChangesAsync();
+                    TempData["success"] = "Category edited succesfully";
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -143,6 +146,8 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             var category = await _context.Categories.FindAsync(id);
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
+            TempData["success"] = "Category deleted succesfully";
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -61,6 +61,8 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             {
                 _context.Add(color);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Size created succesfully";
+
                 return RedirectToAction(nameof(Index));
             }
             return View(color);
@@ -99,7 +101,10 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 try
                 {
                     _context.Update(color);
+
                     await _context.SaveChangesAsync();
+                    TempData["success"] = "Size edited succesfully";
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -143,6 +148,8 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             var color = await _context.Colors.FindAsync(id);
             _context.Colors.Remove(color);
             await _context.SaveChangesAsync();
+            TempData["success"] = "Size deleted succesfully";
+
             return RedirectToAction(nameof(Index));
         }
 
