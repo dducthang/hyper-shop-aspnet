@@ -1,19 +1,24 @@
-﻿@model HyperShop.Models.Product
-
+﻿@*
+	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model HyperShop.Models.Product
 @{
-	ViewData["Title"] = "Create";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+		ViewData["Title"] = "Edit";
+
 }
+
  <div class="m-5">
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Product</h4>
 <hr />
 <div >
 	<div >
-		<form asp-action="Create" class="row" enctype="multipart/form-data">
+		<form asp-action="Edit" class="row" enctype="multipart/form-data">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input asp-for="PrimaryImage" hidden class="form-control" />
+			<input asp-for="Id" hidden class="form-control" />
 			<div class="form-group col-6">
 				<label asp-for="Name" class="control-label"></label>
 				<input asp-for="Name" class="form-control" />
@@ -70,7 +75,7 @@
 				<span asp-validation-for="Description" class="text-danger"></span>
 			</div>
 			<div class="form-group col-12">
-				<input type="submit" value="Create" class="btn btn-primary" />
+				<input type="submit" value="Edit" class="btn btn-primary" />
 			</div>
 
 		</form>
