@@ -19,16 +19,13 @@
 				<input asp-for="Name" class="form-control" />
 				<span asp-validation-for="Name" class="text-danger"></span>
 			</div>
-			<div class="form-group col-6">
-				<label asp-for="Description" class="control-label"></label>
-				<input asp-for="Description" class="form-control" />
-				<span asp-validation-for="Description" class="text-danger"></span>
-			</div>
+			
 			<div class="form-group col-6">
 				<label asp-for="Price" class="control-label"></label>
 				<input asp-for="Price" class="form-control" />
 				<span asp-validation-for="Price" class="text-danger"></span>
 			</div>
+			
 			<div class="form-group col-6">
 				<label asp-for="Gender" class="control-label"></label>
 				<input asp-for="Gender" class="form-control" />
@@ -46,8 +43,12 @@
 			</div>
 			<div class="mb-3 col-6">
 				<label asp-for="PrimaryImage"></label>
-				<input type="file" id="uploadBox" name="file" class="form-control" />
+				<input type="file" id="uploadBox" name="file" class="form-control " />
 			</div>
+
+			
+
+
 			<div class="form-group col-6">
 				<label asp-for="CategoryId" class="control-label"></label>
 				<select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryList"></select>
@@ -57,8 +58,14 @@
 				<select asp-for="BrandId" class ="form-control" asp-items="ViewBag.BrandList"></select>
 			</div>
 			<div class="form-group col-12">
+				<label asp-for="Description" class="control-label"></label>
+				<textarea asp-for="Description" class="form-control" ></textarea>
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="form-group col-12">
 				<input type="submit" value="Create" class="btn btn-primary" />
 			</div>
+
 		</form>
 	</div>
 </div>
@@ -72,4 +79,7 @@
 	@{
 		<partial name="_ValidationScriptsPartial" />
 	}
+
+	<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+	<script>tinymce.init({selector:'textarea'});</script>
 }
