@@ -65,7 +65,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 {
                     file.CopyTo(fileStreams);
                 }
-                product.PrimaryImage = @"\images\products\" + fileName + extension;
+                product.PrimaryImage = @"\img\products\" + fileName + extension;
 
                 _context.Products.Add(product);
                 _context.SaveChanges();
@@ -75,6 +75,75 @@ namespace HyperShop.Web.Areas.Admin.Controllers
 
         }
 
+
+
+        //GET Product/Create
+        public IActionResult Edit(int id)
+        {
+
+            ViewBag.CategoryList = _context.Categories.Select(c =>
+                new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                });
+            ViewBag.BrandList = _context.Brands.Select(c =>
+                new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                });
+
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            if (product is not null)
+            {
+                return View(product);
+
+            }
+            else return NotFound();
+        }
+
+        //POST Product/Create
+        [HttpPost]
+        public IActionResult Edit(Product product, IFormFile? file)
+        {
+
+            if (ModelState.IsValid)
+            {
+                if(file != null)
+                {
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"img\products");
+                    var extension = Path.GetExtension(file.FileName);
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+
+                    if (product.PrimaryImage != null)
+                    {
+                        string oldImage = Path.Combine(wwwRootPath, product.PrimaryImage.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImage))
+                        { 
+                            System.IO.File.Delete(oldImage);
+
+                        }
+
+                    }
+
+                    product.PrimaryImage = @"\img\products\" + fileName + extension;
+
+                }
+
+                _context.Products.Update(product);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(product);
+
+        }
 
 
 
