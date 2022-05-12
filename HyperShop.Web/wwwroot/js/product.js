@@ -1,5 +1,6 @@
+
 $(document).ready(function () {
-	$('#product-table').DataTable({
+	dataTable = $('#product-table').DataTable({
 		"ajax": {
 			"url": "/admin/product/getall",
 		},
@@ -7,9 +8,9 @@ $(document).ready(function () {
 			{
 				"data": "primaryImage", 
 				"render": function (data) {
-					return '<img class="img-fluid" src="'+ data + '" />';
+					return '<img class="img-fluid" src="' + data + '" style="width:50px;;">';
 				},
-				"width": "15%"
+				"width": "1%"
 			},
 			{ "data": "name", "width": "15%" },
 			{ "data": "price", "width": "15%" },
@@ -33,5 +34,36 @@ $(document).ready(function () {
 });
 
 function Delete(url) {
+	Swal.fire({
+		title: 'Are you sure?',
+		text: "You won't be able to revert this!",
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes, delete it!'
+	}).then((result) => {
+		if (result.isConfirmed) {
+			$.ajax({
+				url,
+				type: 'DELETE',
+				success: function (data) {
+					if (data.success) {
+						dataTable.ajax.reload();
+						Swal.fire(
+							'Success!',
+							data.message,
+						)
+					}
+					else {
+						Swal.fire(
+							'Error!',
+							data.message,x
+						)
+					}
+				}
+			})
 
+		}
+	})
 }

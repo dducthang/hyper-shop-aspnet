@@ -63,6 +63,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
 
         //POST Product/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Product product, IFormFile? file)
         {   
 
@@ -120,6 +121,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
 
         //POST Product/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(Product product, IFormFile? file)
         {
 
@@ -181,12 +183,25 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
             if(product!= null)
             {
-                _context.Products.Remove(product);
-                
-            }
-            return StatusCode(204);
-        }
+                //TODO: remove all image!!
 
+                if (product.PrimaryImage != null)
+                {
+                    string oldImage = Path.Combine(_hostEnvironment.WebRootPath, product.PrimaryImage.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImage))
+                    {
+                        System.IO.File.Delete(oldImage);
+
+                    }
+                }
+                _context.Products.Remove(product);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Delete successfully!" });
+            }
+            return Json(new { success = false, message = "Error while deleting!" });
+
+
+        }
         #endregion
 
     }
