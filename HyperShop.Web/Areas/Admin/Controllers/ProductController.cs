@@ -85,7 +85,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 _context.Products.Add(product);
                 _context.SaveChanges();
                 TempData["success"] = "Product created succesfully";
-                return RedirectToAction("Index");   
+                return RedirectToAction("Index", "Stock", new { productId = product.Id });
             }
             return View(product);
 
@@ -93,7 +93,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
 
 
 
-        //GET Product/Create
+        //GET Product/Edit
         public IActionResult Edit(int id)
         {
 
@@ -119,7 +119,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             else return NotFound();
         }
 
-        //POST Product/Create
+        //POST Product/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Product product, IFormFile? file)
