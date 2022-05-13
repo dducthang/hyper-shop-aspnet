@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HyperShop.DataAccess;
 using HyperShop.Models;
+using HyperShop.Models.ViewModels;
+using HyperShop.Models.StockStuff;
 
 namespace HyperShop.Web.Areas.Admin.Controllers
 {
@@ -23,16 +25,61 @@ namespace HyperShop.Web.Areas.Admin.Controllers
         // GET: Admin/Stock?productId=3
         public IActionResult Index(int productId)
         {
-            var stockList = _context.Stock.Where(s => s.ProductId == productId).ToList();
-            return View(stockList);
+            var stockList = _context.Stock
+                .Where(s => s.ProductId == productId)
+                .Include(s => s.Color)
+                .ToList()
+                .GroupBy(s => new { s.ColorId, s.Color.ColorValue })
+                .Select(s => new Color
+                {
+                    Id = s.Key.ColorId,
+                    ColorValue = s.Key.ColorValue
+                });
+            var stockVM = new StockVM
+            {
+                ProductId = productId,
+                Stock = stockList.ToList()
+            };
+            return View(stockVM);
         }
 
         
 
         // GET: Admin/Stock/Create
-        public IActionResult Create(int productId, int colorId)
+        public IActionResult Create(int productId)
         {
-            return View();
+            List<SizeQuantity> sizeQty = _context.Sizes.Select(s => new SizeQuantity
+            {
+                Size = s.SizeValue,
+                SizeId = s.Id,
+                Qty = 0
+            }).ToList();
+
+
+            List<SizeQuantity> sizeQty2 = new List<SizeQuantity>();
+            for (int i = 0; i < sizeQty.Count; i++)
+            {
+                sizeQty2.Add(new SizeQuantity
+                {
+                    Size = sizeQty[i].Size,
+                    SizeId = sizeQty[i].SizeId,
+                    Qty = sizeQty[i].Qty,
+
+                });
+            }
+
+            StockUpsertVM stockUpsertVM = new StockUpsertVM
+            {
+                ProductId = productId,
+                SizeQty = sizeQty2
+
+            };
+            ViewBag.Colors = _context.Colors.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.ColorValue
+            });
+            return View(stockUpsertVM);
         }
 
         // POST: Admin/Stock/Create
@@ -40,15 +87,13 @@ namespace HyperShop.Web.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductId,SizeId,ColorId,Quantity")] Stock stock)
+        public IActionResult Create(StockUpsertVM stockUpsertVM)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(stock);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-            return View(stock);
+            return View(stockUpsertVM);
         }
 
         // GET: Admin/Stock/Edit/5

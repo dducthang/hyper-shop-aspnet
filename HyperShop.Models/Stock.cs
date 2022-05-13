@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,9 +17,13 @@ namespace HyperShop.Models
         [Required]
         [Display(Name = "Size")]
         public int SizeId { get; set; }
+        [ValidateNever]
+        public Size Size { get; set; }
         [Required]
         [Display(Name = "Color")]
         public int ColorId { get; set; }
+        [ValidateNever]
+        public Color Color { get; set; }
         [Required]
         public int Quantity { get; set; }
 

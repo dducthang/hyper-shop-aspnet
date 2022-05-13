@@ -1,39 +1,42 @@
-﻿@model IEnumerable<HyperShop.Models.Stock>
+﻿@model HyperShop.Models.ViewModels.StockVM
 
+	@{
+	ViewData["Title"] = "Stock";
+}
 <div class="m-5">
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-action="Create"  asp-route-productId="@Model.ProductId">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductId)
-            </th>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.ProductId)
+			</th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.ColorId)
-            </th>
+			<th>
+				@Html.DisplayNameFor(model => model.Stock[0].ColorValue)
+			</th>
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ColorId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+@foreach (var item in Model.Stock) {
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => Model.ProductId)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ColorValue)
+			</td>
+			<td>
+				<a asp-action="Edit" asp-route-colorid="@item.Id" asp-route-productId="@Model.ProductId">Edit</a> |
+				<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+				<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+			</td>
+		</tr>
 }
-    </tbody>
+	</tbody>
 </table>
 </div>

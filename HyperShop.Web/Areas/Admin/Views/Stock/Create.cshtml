@@ -1,54 +1,50 @@
-﻿@model HyperShop.Models.Stock
+﻿@model HyperShop.Models.ViewModels.StockUpsertVM
 
-@{
-    Layout = null;
-}
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
+<div class="m-5">
 
 <h4>Stock</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ProductId" class="control-label"></label>
-                <input asp-for="ProductId" class="form-control" />
-                <span asp-validation-for="ProductId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SizeId" class="control-label"></label>
-                <input asp-for="SizeId" class="form-control" />
-                <span asp-validation-for="SizeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ColorId" class="control-label"></label>
-                <input asp-for="ColorId" class="form-control" />
-                <span asp-validation-for="ColorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+	<div class="col-md-4">
+		<form method="post" asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input asp-for="ProductId" hidden class="form-control" />
+
+
+
+			<div class="form-group">
+				<label asp-for="ColorId" class="control-label"></label>
+				<select asp-for="ColorId" class ="form-control" asp-items="ViewBag.Colors">
+					<option disabled selected>--Select Color--</option>
+				</select>
+				<span asp-validation-for="ColorId" class="text-danger"></span>
+
+			</div>
+			<table class="table">
+				<tr>
+					<th >Size</th>
+					<th>Quantity</th>
+				</tr>
+			
+			@for (int i = 0; i<Model.SizeQty.Count; i++ )
+			{
+				<tr>
+					<input asp-for="@Model.SizeQty[i].SizeId" hidden class="form-control" />
+					<input asp-for="@Model.SizeQty[i].Size" hidden class="form-control" />
+					<td>@Model.SizeQty[i].Size</td>
+					<td><input asp-for="@Model.SizeQty[i].Qty" type="number" class="form-control" /></td>
+				</tr>
+			}
+			</table>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+	<a asp-action="Index">Back to List</a>
 </div>
-
-</body>
-</html>
+</div>
