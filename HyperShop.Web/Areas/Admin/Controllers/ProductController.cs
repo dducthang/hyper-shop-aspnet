@@ -1,13 +1,12 @@
 ﻿using HyperShop.DataAccess;
 using HyperShop.Models;
+using HyperShop.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,15 +18,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class ProductController : Controller
     {
-        private void Image_resize(string input_Image_Path, string output_Image_Path, int width = 200, int height = 200)
-        {
-            using (var image = Image.Load(input_Image_Path))
-            {
-                image.Mutate(x => x
-                     .Resize(image.Width > width ? width : image.Width, image.Height > height ? height : image.Height));
-                image.Save(output_Image_Path);
-            }
-        }
+        
         private  IWebHostEnvironment _hostEnvironment;
         private ApplicationDbContext _context;
         public ProductController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
@@ -78,7 +69,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 {
                     file.CopyTo(fileStreams);
                 }
-                Image_resize(filePath, filePath);
+                ImageTool.Image_resize(filePath, filePath);
 
                 product.PrimaryImage = @"\img\products\" + fileName + extension;
 
@@ -150,7 +141,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
 
                     }
 
-                    Image_resize(filePath, filePath);
+                    ImageTool.Image_resize(filePath, filePath);
 
                     product.PrimaryImage = @"\img\products\" + fileName + extension;
 

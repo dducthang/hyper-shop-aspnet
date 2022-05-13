@@ -9,6 +9,10 @@ using HyperShop.DataAccess;
 using HyperShop.Models;
 using HyperShop.Models.ViewModels;
 using HyperShop.Models.StockStuff;
+using Microsoft.AspNetCore.Http;
+using HyperShop.Utility;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace HyperShop.Web.Areas.Admin.Controllers
 {
@@ -16,15 +20,19 @@ namespace HyperShop.Web.Areas.Admin.Controllers
     public class StockController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IWebHostEnvironment _hostEnvironment;
 
-        public StockController(ApplicationDbContext context)
+
+        public StockController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
 
         // GET: Admin/Stock?productId=3
         public IActionResult Index(int productId)
         {
+            if (productId == 0) return NotFound();
             var stockList = _context.Stock
                 .Where(s => s.ProductId == productId)
                 .Include(s => s.Color)
@@ -56,22 +64,12 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             }).ToList();
 
 
-            List<SizeQuantity> sizeQty2 = new List<SizeQuantity>();
-            for (int i = 0; i < sizeQty.Count; i++)
-            {
-                sizeQty2.Add(new SizeQuantity
-                {
-                    Size = sizeQty[i].Size,
-                    SizeId = sizeQty[i].SizeId,
-                    Qty = sizeQty[i].Qty,
 
-                });
-            }
 
             StockUpsertVM stockUpsertVM = new StockUpsertVM
             {
                 ProductId = productId,
-                SizeQty = sizeQty2
+                SizeQty = sizeQty
 
             };
             ViewBag.Colors = _context.Colors.Select(s => new SelectListItem
@@ -87,10 +85,73 @@ namespace HyperShop.Web.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(StockUpsertVM stockUpsertVM)
+        public IActionResult Create(StockUpsertVM stockUpsertVM, IFormFile? primaryImg, List<IFormFile> secondaryImg)
         {
             if (ModelState.IsValid)
             {
+
+                //Add many stock rows
+                foreach(var item in stockUpsertVM.SizeQty)
+                {
+                    if (item.Qty > 0)
+                    {
+                        _context.Stock.Add(new Stock
+                        {
+                            ProductId = stockUpsertVM.ProductId,
+                            ColorId = stockUpsertVM.ColorId,
+                            SizeId = item.SizeId,
+                            Quantity = item.Qty
+                        });
+                    }
+                }
+
+                if(primaryImg!= null)
+                {
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    var uploads = Path.Combine(wwwRootPath, @"img\products");
+
+                    string fileName = Guid.NewGuid().ToString();
+                    var extension = Path.GetExtension(primaryImg.FileName);
+                    string filePath = Path.Combine(uploads, fileName + extension);
+                    using (var fileStreams = new FileStream(filePath, FileMode.Create))
+                    {
+                        primaryImg.CopyTo(fileStreams);
+                    }
+                    ImageTool.Image_resize(filePath, filePath);
+
+                    //add a primary img
+                    _context.PrimaryImages.Add(new PrimaryImage
+                    {
+                        ColorId = stockUpsertVM.ColorId,
+                        ProductId = stockUpsertVM.ProductId,
+                        Url = @"\img\products\" + fileName + extension
+                    });
+
+                    //add many secondary img rows
+                    if(secondaryImg!= null)
+                    {
+                        foreach (var item in secondaryImg)
+                        {
+                            fileName = Guid.NewGuid().ToString();
+                            extension = Path.GetExtension(item.FileName);
+                            filePath = Path.Combine(uploads, fileName + extension);
+                            using (var fileStreams = new FileStream(filePath, FileMode.Create))
+                            {
+                                item.CopyTo(fileStreams);
+                            }
+                            ImageTool.Image_resize(filePath, filePath);
+
+                            _context.SecondaryImages.Add(new SecondaryImage
+                            {
+                                ColorId = stockUpsertVM.ColorId,
+                                ProductId = stockUpsertVM.ProductId,
+                                Url = @"\img\products\" + fileName + extension
+                            });
+                        }
+                    }
+
+                }
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(stockUpsertVM);

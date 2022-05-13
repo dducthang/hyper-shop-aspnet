@@ -20,5 +20,7 @@ namespace HyperShop.DataAccess
         public DbSet<HyperShop.Models.Size> Sizes { get; set; }
         public DbSet<HyperShop.Models.Product> Products { get; set; }
         public DbSet<HyperShop.Models.Stock> Stock { get; set; }
+        public DbSet<HyperShop.Models.PrimaryImage> PrimaryImages { get; set; }
+        public DbSet<HyperShop.Models.SecondaryImage> SecondaryImages { get; set; }
     }
 }

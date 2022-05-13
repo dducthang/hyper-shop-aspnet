@@ -1,38 +1,46 @@
 ﻿@model HyperShop.Models.ViewModels.StockUpsertVM
 
+@{
+	ViewData["Title"] = "Create";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <div class="m-5">
 
 <h4>Stock</h4>
 <hr />
-<div class="row">
-	<div class="col-md-4">
-		<form method="post" asp-action="Create">
+<div>
+	<div>
+		<form method="post" class="row" asp-action="Create" enctype="multipart/form-data">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<input asp-for="ProductId" hidden class="form-control" />
 
 
 
-			<div class="form-group">
+			<div class="form-group col-6">
 				<label asp-for="ColorId" class="control-label"></label>
 				<select asp-for="ColorId" class ="form-control" asp-items="ViewBag.Colors">
 					<option disabled selected>--Select Color--</option>
 				</select>
 				<span asp-validation-for="ColorId" class="text-danger"></span>
-
 			</div>
-			<table class="table">
-				<tr>
-					<th >Size</th>
-					<th>Quantity</th>
-				</tr>
-			
+			<div class="form-group col-6">
+				<label asp-for="PrimaryImage"></label>
+				<input type="file" accept="image/png, image/jpg, image/jpeg" id="uploadBox" name="primaryImg" class="form-control " />
+			</div>
+			<div class="form-group col-6">
+				<label asp-for="SecondaryImages"></label>
+				<input type="file" accept="image/png, image/jpg, image/jpeg" id="uploadBox" name="secondaryImg" class="form-control" multiple />
+			</div>
+
+			<table class="table table-hover">
+			<label class="col-12">Quantity</label>
 			@for (int i = 0; i<Model.SizeQty.Count; i++ )
 			{
-				<tr>
+				<tr >
 					<input asp-for="@Model.SizeQty[i].SizeId" hidden class="form-control" />
 					<input asp-for="@Model.SizeQty[i].Size" hidden class="form-control" />
-					<td>@Model.SizeQty[i].Size</td>
+					<td><b>Size @Model.SizeQty[i].Size</b></td>
 					<td><input asp-for="@Model.SizeQty[i].Qty" type="number" class="form-control" /></td>
 				</tr>
 			}
@@ -48,3 +56,6 @@
 	<a asp-action="Index">Back to List</a>
 </div>
 </div>
+@section CSS{
+	<link rel="stylesheet" href="/css/custom.css">
+}

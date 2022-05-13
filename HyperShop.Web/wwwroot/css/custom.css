@@ -1,1 +1,9 @@
 /* your styles go here */
+table, tr, td, thead, tbody {
+    display: block !important;
+}
+
+tr {
+    float: left !important;
+    width: 20% !important;
+}

@@ -14,6 +14,8 @@ namespace HyperShop.Models.ViewModels
         public int ProductId { get; set; }
         [Display(Name ="Color")]
         public int ColorId { get; set; }
+        public string PrimaryImage { get; set; }
+        public List<string> SecondaryImages { get; set; }
         public List<SizeQuantity> SizeQty { get; set; }
 
     }
