@@ -1,55 +1,54 @@
-﻿@model HyperShop.Models.Stock
+﻿@model HyperShop.Models.ViewModels.StockUpsertVM
 
 @{
-    Layout = null;
+	ViewData["Title"] = "Edit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
+<div class="m-5">
 
 <h4>Stock</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="ProductId" class="control-label"></label>
-                <input asp-for="ProductId" class="form-control" />
-                <span asp-validation-for="ProductId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SizeId" class="control-label"></label>
-                <input asp-for="SizeId" class="form-control" />
-                <span asp-validation-for="SizeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ColorId" class="control-label"></label>
-                <input asp-for="ColorId" class="form-control" />
-                <span asp-validation-for="ColorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div>
+	<div>
+		<form method="post" class="row" asp-action="Edit" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input asp-for="ProductId" hidden class="form-control" />
+			<input asp-for="ColorId" hidden class="form-control" />
+			<div class="form-group col-6">
+				<label asp-for="PrimaryImage"></label>
+				<input type="file" accept="image/png, image/jpg, image/jpeg" id="uploadBox" name="primaryImg" class="form-control " />
+			</div>
+			<div class="form-group col-6">
+				<label asp-for="SecondaryImages"></label>
+				<input type="file" accept="image/png, image/jpg, image/jpeg" id="uploadBox" name="secondaryImg" class="form-control" multiple />
+			</div>
+
+			<table class="table table-hover">
+			<label class="col-12">Quantity</label>
+			@for (int i = 0; i<Model.SizeQty.Count; i++ )
+			{
+				<tr >
+					<input asp-for="@Model.SizeQty[i].SizeId" hidden class="form-control" />
+					<input asp-for="@Model.SizeQty[i].Size" hidden class="form-control" />
+					<input asp-for="@Model.SizeQty[i].StockId" hidden class="form-control" />
+
+					<td><b>Size @Model.SizeQty[i].Size</b></td>
+					<td><input asp-for="@Model.SizeQty[i].Qty" type="number" class="form-control" /></td>
+				</tr>
+			}
+			</table>
+			<div class="form-group">
+				<input type="submit" value="Edit" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+	<a asp-action="Index">Back to List</a>
 </div>
-
-</body>
-</html>
+</div>
+@section CSS{
+	<link rel="stylesheet" href="/css/custom.css">
+}

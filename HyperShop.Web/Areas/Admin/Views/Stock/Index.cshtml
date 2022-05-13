@@ -11,7 +11,7 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.ProductId)
+				@Html.DisplayNameFor(model => model.Stock[0].Image)
 			</th>
 
 			<th>
@@ -25,8 +25,9 @@
 @foreach (var item in Model.Stock) {
 		<tr>
 			<td>
-				@Html.DisplayFor(modelItem => Model.ProductId)
+				<img class="img-fluid" src="@item.Image" style="width:50px;">
 			</td>
+
 			<td>
 				@Html.DisplayFor(modelItem => item.ColorValue)
 			</td>

@@ -8,6 +8,7 @@ namespace HyperShop.Models.StockStuff
 {
     public class SizeQuantity
     {
+        public int StockId { get; set; }
         public int SizeId { get; set; }
         public double Size { get; set; }
         public int Qty { get; set; }
