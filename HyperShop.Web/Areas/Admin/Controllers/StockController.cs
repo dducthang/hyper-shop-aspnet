@@ -73,7 +73,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 SizeId = s.Id,
                 Qty = 0
             }).ToList();
-
+            
 
 
 
@@ -83,11 +83,18 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                 SizeQty = sizeQty
 
             };
-            ViewBag.Colors = _context.Colors.Select(s => new SelectListItem
+
+
+            ViewBag.Colors = _context.Colors.Where(s =>
+            
+                !_context.Stock.Any(c => c.ColorId == s.Id && c.ProductId == productId)
+            ).Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
                 Text = s.ColorValue
             });
+
+
             return View(stockUpsertVM);
         }
 
@@ -100,7 +107,6 @@ namespace HyperShop.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 //Add many stock rows
                 foreach(var item in stockUpsertVM.SizeQty)
                 {
@@ -163,7 +169,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
 
                 }
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { productId = stockUpsertVM.ProductId });
             }
             return View(stockUpsertVM);
         }
@@ -225,38 +231,5 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             return RedirectToAction("Index", new { productId = stockUpsertVM.ProductId });
         }
 
-        // GET: Admin/Stock/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var stock = await _context.Stock
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (stock == null)
-            {
-                return NotFound();
-            }
-
-            return View(stock);
-        }
-
-        // POST: Admin/Stock/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var stock = await _context.Stock.FindAsync(id);
-            _context.Stock.Remove(stock);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool StockExists(int id)
-        {
-            return _context.Stock.Any(e => e.Id == id);
-        }
     }
 }

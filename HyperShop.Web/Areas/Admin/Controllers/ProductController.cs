@@ -58,7 +58,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
         public IActionResult Create(Product product, IFormFile? file)
         {   
 
-            if(ModelState.IsValid)
+            if(ModelState.IsValid && file != null)
             {
                 string wwwRootPath = _hostEnvironment.WebRootPath;
                 string fileName = Guid.NewGuid().ToString();
@@ -174,8 +174,20 @@ namespace HyperShop.Web.Areas.Admin.Controllers
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
             if(product!= null)
             {
-                //TODO: remove all image!!
 
+                List<string> images = _context.PrimaryImages.Where(i => i.ProductId == id).Select(i=> i.Url).ToList();
+                images.AddRange(_context.SecondaryImages.Where(i => i.ProductId == id)
+                    .Select(i => i.Url).ToList());
+
+                foreach(var image in images)
+                {
+                    string oldImage = Path.Combine(_hostEnvironment.WebRootPath, image.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImage))
+                    {
+                        System.IO.File.Delete(oldImage);
+
+                    }
+                }
                 if (product.PrimaryImage != null)
                 {
                     string oldImage = Path.Combine(_hostEnvironment.WebRootPath, product.PrimaryImage.TrimStart('\\'));

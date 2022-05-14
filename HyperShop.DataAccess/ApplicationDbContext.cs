@@ -22,5 +22,21 @@ namespace HyperShop.DataAccess
         public DbSet<HyperShop.Models.Stock> Stock { get; set; }
         public DbSet<HyperShop.Models.PrimaryImage> PrimaryImages { get; set; }
         public DbSet<HyperShop.Models.SecondaryImage> SecondaryImages { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>()
+                .HasMany<Product>()
+                .WithOne(p => p.Category)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Brand>()
+                .HasMany<Product>()
+                .WithOne(p => p.Brand)
+                .OnDelete(DeleteBehavior.SetNull);
+
+
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

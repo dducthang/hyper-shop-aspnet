@@ -70,7 +70,7 @@
 				<span asp-validation-for="Description" class="text-danger"></span>
 			</div>
 			<div class="form-group col-12">
-				<input type="submit" value="Create" class="btn btn-primary" />
+				<button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>
 			</div>
 
 		</form>
@@ -82,6 +82,21 @@
 </div>
 
 </div>
+
+<script>
+function ValidateInput(){
+	if($('#uploadBox').val()===''){
+		Swal.fire({
+		icon: 'error',
+		title: 'Oops...',
+		text: 'You need provide product image!'
+})
+	return false;
+	}
+	return true;
+}
+</script>
+
 @section Scripts{
 	@{
 		<partial name="_ValidationScriptsPartial" />

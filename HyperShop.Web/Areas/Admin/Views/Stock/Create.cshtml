@@ -30,7 +30,7 @@
 			</div>
 			<div class="form-group col-6">
 				<label asp-for="SecondaryImages"></label>
-				<input type="file" accept="image/png, image/jpg, image/jpeg" id="uploadBox" name="secondaryImg" class="form-control" multiple />
+				<input type="file" accept="image/png, image/jpg, image/jpeg" id="uploadBoxMany" name="secondaryImg" class="form-control" multiple />
 			</div>
 
 			<table class="table table-hover">
@@ -41,12 +41,12 @@
 					<input asp-for="@Model.SizeQty[i].SizeId" hidden class="form-control" />
 					<input asp-for="@Model.SizeQty[i].Size" hidden class="form-control" />
 					<td><b>Size @Model.SizeQty[i].Size</b></td>
-					<td><input asp-for="@Model.SizeQty[i].Qty" type="number" class="form-control" /></td>
+					<td><input asp-for="@Model.SizeQty[i].Qty" type="number" class="form-control quantity" /></td>
 				</tr>
 			}
 			</table>
 			<div class="form-group">
-				<input type="submit" value="Create" class="btn btn-primary" />
+				<button type="submit" onclick="return ValidateInput()" class="btn btn-primary" style="width:150px">Create</button>
 			</div>
 		</form>
 	</div>
@@ -56,6 +56,36 @@
 	<a asp-action="Index">Back to List</a>
 </div>
 </div>
+<script>
+	function ValidateInput(){
+	if($('#uploadBox').val()==='' || $('#uploadBoxMany').val()===''){
+		Swal.fire({
+		icon: 'error',
+		title: 'Oops...',
+		text: 'You need provide product primary and secondary images!'
+})
+	return false;
+	}
+	let qtySum=0
+	for(item of $('.quantity')){
+		qtySum+=item.value;
+	}
+	if(qtySum==0){
+		Swal.fire({
+		icon: 'error',
+		title: 'Oops...',
+		text: 'You have not add anything to stock!'
+})
+	return false;
+	}
+	return true;
+}
+</script>
 @section CSS{
 	<link rel="stylesheet" href="/css/custom.css">
+}
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
 }

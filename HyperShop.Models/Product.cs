@@ -25,10 +25,10 @@ namespace HyperShop.Models
         [Display(Name ="Image")]
         public string PrimaryImage { get; set; }
         [Display(Name = "Category")]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public Category Category { get; set; }
         [Display(Name = "Brand")]
-        public int BrandId { get; set; }
+        public int? BrandId { get; set; }
         public Brand Brand { get; set; }
 
     }
