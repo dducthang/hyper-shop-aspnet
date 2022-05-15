@@ -14,6 +14,7 @@ namespace HyperShop.Models
         [Required]
         [Display(Name ="Product")]
         public int ProductId { get; set; }
+        public Product Product { get; set; }
         [Required]
         [Display(Name = "Size")]
         public int SizeId { get; set; }
