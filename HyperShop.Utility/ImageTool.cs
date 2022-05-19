@@ -6,7 +6,7 @@ namespace HyperShop.Utility
 {
     public class ImageTool
     {
-        public static void Image_resize(string input_Image_Path, string output_Image_Path, int width = 200, int height = 200)
+        public static void Image_resize(string input_Image_Path, string output_Image_Path, int width = 592, int height = 592)
         {
             using (var image = Image.Load(input_Image_Path))
             {

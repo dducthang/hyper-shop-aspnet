@@ -165,7 +165,7 @@ namespace HyperShop.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var productList = _context.Products.ToList();
+            var productList = _context.Products.Include(p=>p.Brand).ToList();
             return Json(new { data = productList });
         }
         [HttpDelete]

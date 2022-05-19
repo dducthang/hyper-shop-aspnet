@@ -224,6 +224,73 @@ namespace HyperShop.Web.Areas.Admin.Controllers
                     ProductId = stockUpsertVM.ProductId,
                 });
             }
+            if (primaryImg != null)
+            {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Guid.NewGuid().ToString();
+                string uploads = Path.Combine(wwwRootPath, @"img\products");
+                string extension = Path.GetExtension(primaryImg.FileName);
+                string filePath = Path.Combine(uploads, fileName + extension);
+                using (var fileStreams = new FileStream(filePath, FileMode.Create))
+                {
+                    primaryImg.CopyTo(fileStreams);
+                }
+                var priImg = _context.PrimaryImages.FirstOrDefault(i => i.ProductId == stockUpsertVM.ProductId && i.ColorId == stockUpsertVM.ColorId);
+                if (priImg != null)
+                {
+                    string oldImage = Path.Combine(wwwRootPath, priImg.Url.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImage))
+                    {
+                        System.IO.File.Delete(oldImage);
+
+                    }
+
+                }
+
+                ImageTool.Image_resize(filePath, filePath);
+
+                priImg.Url = @"\img\products\" + fileName + extension;
+
+            }
+            if (secondaryImg != null)
+            {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string uploads = Path.Combine(wwwRootPath, @"img\products");
+
+                var oldImgList = _context.SecondaryImages.Where(i => i.ProductId == stockUpsertVM.ProductId && i.ColorId == stockUpsertVM.ColorId).ToList();
+                foreach(var img in oldImgList)
+                {
+                    string oldImage = Path.Combine(wwwRootPath, img.Url.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImage))
+                    {
+                        System.IO.File.Delete(oldImage);
+
+                    }
+                }
+                _context.SecondaryImages.RemoveRange(oldImgList);
+                foreach (var item in secondaryImg)
+                {
+
+                    string fileName = Guid.NewGuid().ToString();
+                    string extension = Path.GetExtension(item.FileName);
+                    string filePath = Path.Combine(uploads, fileName + extension);
+                    using (var fileStreams = new FileStream(filePath, FileMode.Create))
+                    {
+                        item.CopyTo(fileStreams);
+                    }
+                    ImageTool.Image_resize(filePath, filePath);
+
+                    _context.SecondaryImages.Add(new SecondaryImage
+                    {
+                        ColorId = stockUpsertVM.ColorId,
+                        ProductId = stockUpsertVM.ProductId,
+                        Url = @"\img\products\" + fileName + extension
+                    });
+                }
+            }
+
+
+
 
 
             _context.Stock.UpdateRange(stockQty);

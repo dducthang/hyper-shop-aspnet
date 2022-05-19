@@ -13,6 +13,7 @@ $(document).ready(function () {
 				"width": "1%"
 			},
 			{ "data": "name", "width": "15%" },
+			{ "data": "brand.name", "width": "15%" },
 			{ "data": "price", "width": "15%" },
 			{ "data": "gender", "width": "15%" },
 			{

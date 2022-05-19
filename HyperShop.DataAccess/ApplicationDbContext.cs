@@ -34,24 +34,6 @@ namespace HyperShop.DataAccess
                 .WithOne(p => p.Brand)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Size>()
-                .HasMany<Stock>()
-                .WithOne(s=>s.Size)
-                .OnDelete(DeleteBehavior.Cascade);
-
-
-            modelBuilder.Entity<Color>()
-                .HasMany<Stock>()
-                .WithOne(s => s.Color)
-                .OnDelete(DeleteBehavior.Cascade);
-
-
-
-
-
-
-
-
 
 
             base.OnModelCreating(modelBuilder);
