@@ -19,8 +19,6 @@ namespace HyperShop.Web.Areas.Customer.Controllers
         public IActionResult Index()
         {
 
-
-
             ProductsPageVM productsPageVM = new ProductsPageVM()
             {
                 Brands = _context.Products
@@ -79,6 +77,12 @@ namespace HyperShop.Web.Areas.Customer.Controllers
                 .Select(p => p.Key).ToList(),
             };
             return View(productsPageVM);
+        }
+        public IActionResult Detail(int id)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            if (product != null) return View(product);
+            return NotFound();
         }
     }
 }

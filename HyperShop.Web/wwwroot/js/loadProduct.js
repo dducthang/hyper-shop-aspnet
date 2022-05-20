@@ -1,5 +1,7 @@
-let page = 1;
 let taking = 3;
+let page = 1;
+let lastPage;
+
 let categories = [];
 let brands = [];
 let colors = [];
@@ -14,9 +16,13 @@ $(document).ready(function () {
     loadProducts()
 });
 
+//Apply button clicked
 $('.filter').on('click', function(e){
     e.preventDefault();
     e.stopPropagation();
+
+    page = 1;
+
     if (this.classList.contains("category-filter")) {
         categories = [];
         $('.category-form input:checked').each(function () {
@@ -58,9 +64,13 @@ $('.filter').on('click', function(e){
 });
 
 
+//Clear button clicked
 $('.clear').on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
+
+    page = 1;
+
     if (this.classList.contains("category-clear")) {
         categories = [];
         $('.category-form input:checked').each(function () {
@@ -103,6 +113,17 @@ $('.clear').on('click', function (e) {
 });
 
 
+//page changed
+$('.pages').on('click', '.page-item', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if ($(this).text() == 'First') page = 1;
+    else if ($(this).text() == 'Last') page = lastPage;
+    else
+        page = $(this).text();
+    loadProducts();
+})
+
 
 
 
@@ -127,7 +148,7 @@ function loadProducts(){
         },
         dataType: "json",
         success: function (res) {
-            lastPage = Math.floor(res.productsCount / taking);
+            lastPage = Math.ceil(res.productsCount / taking);
 
             $('.products').html(getProductList(res.productList));
             $('.pages').html(getPagesNumber(lastPage, page));
@@ -154,22 +175,22 @@ function getProduct(product) {
                   <div class="product">
                     <div class="flip-container">
                       <div class="flipper">
-                        <div class="front"><a href="detail.html"><img src="${product.primaryImage}" alt="" class="img-fluid"></a></div>
+                        <div class="front"><a href="/Customer/Product/Detail/${product.id}"><img src="${product.primaryImage}" alt="" class="img-fluid"></a></div>
                         <div class="back">
 
                         </div>
                       </div>
-                    </div><a href="detail.html" class="invisible"><img src="${product.primaryImage}" alt="" class="img-fluid"></a>
+                    </div><a href="/Customer/Product/Detail/${product.id}" class="invisible"><img src="${product.primaryImage}" alt="" class="img-fluid"></a>
                      
                     <div class="text">
-                      <h3><a href="detail.html">${product.name}</a></h3>
+                      <h3><a href="/Customer/Product/Detail/${product.id}">${product.name}</a></h3>
                       <p class = "p-3 m-1 bg-primary text-white">
                         ${product.colorCount} COLOR
                       </p>
                       <p class="price">
                         ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}
                       </p>
-                      <p class="buttons"><a href="detail.html" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
+                      <p class="buttons"><a href="/Customer/Product/Detail/${product.id}" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
                     </div>
                     <!-- /.text-->
 
@@ -211,9 +232,7 @@ function getPagesNumber(lastPage, page) {
                 res += `<li class="page-item"><a href="#" class="page-link">...</a></li>`;
             }
         }
-        res += `<li class="page-item">
-  <a href="#" class="page-link">Last</a>
-</li>`;
+        res += `<li class="page-item"><a href="#" class="page-link">Last</a></li>`;
         res += `</ul>`;
     }
 
