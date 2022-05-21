@@ -1,8 +1,8 @@
-﻿@model Product
+﻿@model ProductDetailVM
 @{
-    ViewData["Title"] = "Hyper Shop - " + Model.Name;
+    ViewData["Title"] = "Hyper Shop - " + Model.Product.Name;
 }
-
+<input asp-for="Product.Id" hidden class="product-id" />
 <div id="all">
       <div id="content">
         <div class="container">
@@ -21,13 +21,11 @@
 
             <div class="col-lg-12 order-1 order-lg-2">
               <div id="productMain" class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 product-carousel">
                   <div data-slider-id="1" class="owl-carousel shop-detail-carousel">
-                    <div class="item"> <img src="@Model.PrimaryImage" alt="" class="img-fluid"></div>
-                    <div class="item"> <img src="@Model.PrimaryImage" alt="" class="img-fluid"></div>
-                    <div class="item"> <img src="@Model.PrimaryImage" alt="" class="img-fluid"></div>
+
                   </div>
-                  <div class="ribbon sale">
+                  @*<div class="ribbon sale">
                     <div class="theribbon">SALE</div>
                     <div class="ribbon-background"></div>
                   </div>
@@ -36,26 +34,53 @@
                     <div class="theribbon">NEW</div>
                     <div class="ribbon-background"></div>
                   </div>
-                  <!-- /.ribbon-->
+                  <!-- /.ribbon-->*@
                 </div>
                 <div class="col-md-6">
                   <div class="box">
-                    <h1 class="text-center">@Model.Name</h1>
+                    <h1 class="text-center">@Model.Product.Name</h1>
                     <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product details, material &amp; care and sizing</a></p>
-                    <p class="price">@Model.Price.ToString("c")</p>
+                    <p class="price">@Model.Product.Price.ToString("c")</p>
                     <p class="text-center buttons"><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</a><a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-heart"></i> Add to wishlist</a></p>
-                  </div>
-                  <div data-slider-id="1" class="owl-thumbs">
-                    <button class="owl-thumb-item"><img src="@Model.PrimaryImage" alt="" class="img-fluid"></button>
-                    <button class="owl-thumb-item"><img src="@Model.PrimaryImage" alt="" class="img-fluid"></button>
-                    <button class="owl-thumb-item"><img src="@Model.PrimaryImage" alt="" class="img-fluid"></button>
+                    <div class = "color-pick">
+                        <h3 class="mt-3">Choose Color</h3>
+                    @for(int i=0;i< Model.Colors.Count;i++)
+                    {
+                        if (i == 0)
+                        {
+                            <label>
+                                <input type="radio" name="product-color" checked value="@Model.Colors[i].ColorId">
+                                <img src="@Model.Colors[i].PrimaryImage" width="50">
+                            </label>           
+                        }
+                        else{
+                            <label>
+                            <input type="radio" name="product-color" value="@Model.Colors[i].ColorId">
+                            <img src="@Model.Colors[i].PrimaryImage" width="50">
+                        </label>  
+                        
+                        }           
+                    }
+                    </div>
+                    <div  >
+                        <h3 class="mt-3">Choose Size</h3>
+                    </div>
+                    <ul class="flex-container longhand size-pick">
+                                @foreach (var item in Model.Sizes)
+                                {
+                                    <li class="flex-item"><input disabled id="@item.Id" type="radio" name="radio"><label class="size-label" for="@item.Id">@item.SizeValue</label></li>
+                                }
+                                </ul>
+                            </div>
+                <div data-slider-id="1" class="owl-thumbs">
+
                   </div>
                 </div>
               </div>
               <div id="details" class="box">
                 <p></p>
                 <h4>Product details</h4>
-                @Html.Raw(@Model.Description)
+                @Html.Raw(@Model.Product.Description)
                 
                 <hr>
                 <div class="social">
@@ -173,3 +198,10 @@
         </div>
       </div>
     </div>
+
+@section CSS{
+    <link rel="stylesheet" type="text/css" href="/css/image.radio.css">
+}
+@section Scripts{
+<script src="~/js/loadStock.js"></script>
+}

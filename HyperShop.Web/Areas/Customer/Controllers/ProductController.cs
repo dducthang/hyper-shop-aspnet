@@ -80,8 +80,20 @@ namespace HyperShop.Web.Areas.Customer.Controllers
         }
         public IActionResult Detail(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
-            if (product != null) return View(product);
+            ProductDetailVM productDetailVM = new();
+            productDetailVM.Product = _context.Products.FirstOrDefault(p => p.Id == id);
+            if (productDetailVM.Product != null)
+            {
+                productDetailVM.Colors = _context.Stock
+                    .GroupBy(s=>new {s.ColorId, s.ProductId})
+                    .Where(g => g.Key.ProductId == productDetailVM.Product.Id)
+                    .Select(g => new ProductColor() { 
+                        ColorId = g.Key.ColorId,
+                        PrimaryImage = _context.PrimaryImages.FirstOrDefault(p=>p.ProductId==productDetailVM.Product.Id && p.ColorId==g.Key.ColorId).Url })
+                    .ToList();
+                productDetailVM.Sizes = _context.Sizes.ToList();
+                return View(productDetailVM);
+            }
             return NotFound();
         }
     }

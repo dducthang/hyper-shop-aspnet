@@ -1,6 +1,7 @@
 ﻿using HyperShop.DataAccess;
 using HyperShop.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,6 +54,20 @@ namespace HyperShop.Web.Areas.Customer.Controllers
 
 
             return Json(new { productList, productsCount });
+        }
+        
+        public IActionResult Stock(int productId, int colorId)
+        {
+            var images = _context.SecondaryImages
+                .Where(i => i.ProductId == productId && i.ColorId == colorId)
+                .Select(i=> i.Url)
+                .ToList();
+            var sizes = _context.Stock
+                .Include(s=>s.Size)
+                .Where(s => s.ProductId == productId && s.ColorId == colorId && s.Quantity>0)
+                .Select(s=>new {s.SizeId, s.Size.SizeValue})
+                .ToList();
+            return Json(new { images, sizes });
         }
     }
 }
