@@ -18,7 +18,8 @@ namespace HyperShop.Web.Areas.Customer.Controllers
             _context = context;
         }
 
-        public IActionResult Products(int page,int taking, string search, string orderBy,bool isDesc, List<int> categories, List<int> brands, List<int> colors, List<string> shoesHeights, List<string> closureTypes, List<string> genders)
+        public IActionResult Product(int page,int taking, string search, string orderBy,bool isDesc, List<int> categories, List<int> brands,
+            List<int> colors, List<string> shoesHeights, List<string> closureTypes, List<string> genders)
         {
             if (page == 0) page = 1;
             if (taking == 0) taking = 12;
@@ -54,7 +55,7 @@ namespace HyperShop.Web.Areas.Customer.Controllers
             }
 
 
-            //Linq cant translate this to sql, cant load before order due to performance
+            //Linq cant translate this to sql. Cant load before order due to performance
             //if (isDesc) products = products.OrderByDescending(p => p.GetType().GetProperty(orderBy).GetValue(p));
             //else products = products.OrderBy(p => p.GetType().GetProperty(orderBy).GetValue(p));
 

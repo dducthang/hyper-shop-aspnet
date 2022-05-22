@@ -1,20 +1,3 @@
-let search
-
-let taking = 3;
-let page = 1;
-let lastPage;
-
-let categories = [];
-let brands = [];
-let colors = [];
-let shoesHeights = [];
-let closureTypes = [];
-let genders = [];
-
-let orderBy = "Price";
-let isDesc = false;
-
-
 $(document).ready(function () {
     loadProducts()
 });
@@ -176,7 +159,7 @@ $('.pages').on('click', '.page-item', function (e) {
 //utility
 function loadProducts(){
     $.ajax({
-        url: "/customer/api/products",
+        url: "/Customer/Api/Product",
         traditional: true,
         data: {
             page,
@@ -195,7 +178,9 @@ function loadProducts(){
         dataType: "json",
         success: function (res) {
             lastPage = Math.ceil(res.productsCount / taking);
-
+            const urlPath = this.url.replace('/Api', '');
+            console.log(this.url)
+            window.history.replaceState(null, '', urlPath);
             $('.products').html(getProductList(res.productList));
             $('.pages').html(getPagesNumber(lastPage, page));
             $('.products-showing').html(getProductsShowing(res.productList.length, res.productsCount));
@@ -230,17 +215,24 @@ function getProduct(product) {
                      
                     <div class="text">
                       <h3><a href="/Customer/Product/Detail/${product.id}">${product.name}</a></h3>
-                      <p class = "p-3 m-1 bg-primary text-white">
-                        ${product.colorCount} COLOR
-                      </p>
+                      <p class = "p-3 m-1 bg-primary text-white">`
+    if (product.colorCount > 1) {
+        res+=`${product.colorCount} COLORS`
+    }
+    else {
+        res +=`${ product.colorCount } COLOR`
+    }
+    res += `
+                    </p>
                       <p class="price">
                         ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}
                       </p>
                       <p class="buttons"><a href="/Customer/Product/Detail/${product.id}" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
                     </div>
                     <!-- /.text-->
-
-`
+    `
+                        
+               
 
     if (datediff(Date.now(), Date.parse(product.publishedDate)) < 7) {
         res += `

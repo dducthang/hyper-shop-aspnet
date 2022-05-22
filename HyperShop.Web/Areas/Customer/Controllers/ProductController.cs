@@ -3,6 +3,7 @@ using HyperShop.Models;
 using HyperShop.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HyperShop.Web.Areas.Customer.Controllers
@@ -16,8 +17,20 @@ namespace HyperShop.Web.Areas.Customer.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page, int taking, string search, string orderBy, bool isDesc, List<int> categories, List<int> brands,
+            List<int> colors, List<string> shoesHeights, List<string> closureTypes, List<string> genders)
         {
+            ViewBag.Page = page;
+            ViewBag.Taking = taking;
+            ViewBag.Search = search;
+            ViewBag.OrderBy = orderBy;
+            ViewBag.IsDesc = isDesc;
+            ViewBag.Categories = categories;
+            ViewBag.Brands = brands;
+            ViewBag.Colors = colors;
+            ViewBag.ShoesHeights = shoesHeights;
+            ViewBag.ClosureTypes = closureTypes;
+            ViewBag.Genders = genders;
 
             ProductsPageVM productsPageVM = new ProductsPageVM()
             {
@@ -25,10 +38,8 @@ namespace HyperShop.Web.Areas.Customer.Controllers
                 .Include(p => p.Brand)
                 .ToList()
                 .GroupBy(p => p.Brand)
-                
                 .OrderByDescending(grp => grp.Count())
                 .Take(5)
-                
                 .Select(p => new Brand()
                 {
                     Id = p.Key.Id,
