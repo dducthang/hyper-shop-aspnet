@@ -23,7 +23,7 @@ namespace HyperShop.Web.Areas.Customer.Controllers
         {
             if (page == 0) page = 1;
             if (taking == 0) taking = 12;
-            if (orderBy == null) orderBy = "PublishedDate";
+            if (orderBy == null) orderBy = "Price";
 
             IQueryable<Product> products = _context.Products;
 
@@ -83,6 +83,10 @@ namespace HyperShop.Web.Areas.Customer.Controllers
                 .Where(i => i.ProductId == productId && i.ColorId == colorId)
                 .Select(i=> i.Url)
                 .ToList();
+            images.Insert(0,
+                _context.PrimaryImages
+                .First(i => i.ProductId == productId && i.ColorId == colorId).Url);
+
             var sizes = _context.Stock
                 .Include(s=>s.Size)
                 .Where(s => s.ProductId == productId && s.ColorId == colorId && s.Quantity>0)

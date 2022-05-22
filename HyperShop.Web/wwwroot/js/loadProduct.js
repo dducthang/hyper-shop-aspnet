@@ -153,9 +153,6 @@ $('.pages').on('click', '.page-item', function (e) {
 
 
 
-
-
-
 //utility
 function loadProducts(){
     $.ajax({
@@ -178,13 +175,34 @@ function loadProducts(){
         dataType: "json",
         success: function (res) {
             lastPage = Math.ceil(res.productsCount / taking);
+
             const urlPath = this.url.replace('/Api', '');
-            console.log(this.url)
             window.history.replaceState(null, '', urlPath);
+
+            //load product
             $('.products').html(getProductList(res.productList));
             $('.pages').html(getPagesNumber(lastPage, page));
             $('.products-showing').html(getProductsShowing(res.productList.length, res.productsCount));
 
+            //--------UI handle---------------
+            //checkboxes handle
+            $('input[name="category"]').val(categories);
+            $('input[name="brand"]').val(brands);
+            $('input[name="color"]').val(colors);
+            $('input[name="shoes-height"]').val(shoesHeights);
+            $('input[name="closure"]').val(closureTypes);
+            $('input[name="gender"]').val(genders);
+
+            //sort, order by
+            $('.sort-select').val(orderBy||"Price")
+            if (isDesc) {
+                $('#order-asc').removeClass("btn-primary")
+                $('#order-desc').addClass("btn-primary")
+            }
+            else {
+                $('#order-asc').addClass("btn-primary")
+                $('#order-desc').removeClass("btn-primary")
+            }
         },
         error: function (err) {
             console.log("failed")

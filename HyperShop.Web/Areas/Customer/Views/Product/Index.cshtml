@@ -58,7 +58,7 @@
                      {
                         <div class="checkbox">
                             <label>
-                              <input type="checkbox" value="@item.Id"> @item.Name
+                              <input type="checkbox" name="brand"  value="@item.Id"> @item.Name
                             </label>
                         </div>
                      }
@@ -79,7 +79,7 @@
                      {
                         <div class="checkbox">
                             <label style="text-transform: capitalize">
-                              <input type="checkbox" value="@item.Id"> @item.ColorValue
+                              <input type="checkbox" name="color"  value="@item.Id"> @item.ColorValue
                             </label>
                         </div>
                      }
@@ -100,7 +100,7 @@
                      {
                         <div class="checkbox">
                             <label style="text-transform: capitalize">
-                              <input type="checkbox" value="@item"> @item
+                              <input type="checkbox" name="shoes-height"  value="@item"> @item
                             </label>
                         </div>
                      }
@@ -121,7 +121,7 @@
                      {
                         <div class="checkbox">
                             <label style="text-transform: capitalize">
-                              <input type="checkbox" value="@item"> @item
+                              <input type="checkbox"  name="closure"  value="@item"> @item
                             </label>
                         </div>
                      }
@@ -142,7 +142,7 @@
                      {
                         <div class="checkbox">
                             <label style="text-transform: capitalize">
-                              <input type="checkbox" value="@item"> @item
+                              <input type="checkbox" name="gender"  value="@item"> @item
                             </label>
                         </div>
                      }
@@ -267,7 +267,12 @@
         let genders = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Genders));
 
         let orderBy = "@ViewBag.OrderBy";
-        let isDesc = '@ViewBag.IsDesc';
+        let isDesc =false;
+        
     </script>
+    @if(@ViewBag.IsDesc)
+    {
+        <script>isDesc = true</script>  
+    }
 <script src="~/js/loadProduct.js"></script>
 }
