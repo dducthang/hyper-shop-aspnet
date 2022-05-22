@@ -1,3 +1,5 @@
+let search
+
 let taking = 3;
 let page = 1;
 let lastPage;
@@ -10,11 +12,46 @@ let closureTypes = [];
 let genders = [];
 
 let orderBy = "Price";
+let isDesc = false;
 
 
 $(document).ready(function () {
     loadProducts()
 });
+
+//search
+$('.search-form').on('submit', function (e) {
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    search = $('.search-input').val()
+    loadProducts();
+})
+
+//sort
+$('.sort-select').on('change', function () {
+    orderBy = $(this).val();
+    loadProducts();
+})
+$('.sort-order').on('click', '.sort-order-button', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if ($(this).attr('id') == 'order-asc') {
+        isDesc = false
+        $('#order-asc').addClass("btn-primary")
+        $('#order-desc').removeClass("btn-primary")
+    }
+    else {
+        isDesc = true
+        $('#order-asc').removeClass("btn-primary")
+        $('#order-desc').addClass("btn-primary")
+    }
+    loadProducts();
+})
+
+
 
 //Apply button clicked
 $('.filter').on('click', function(e){
@@ -117,11 +154,18 @@ $('.clear').on('click', function (e) {
 $('.pages').on('click', '.page-item', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    if ($(this).text() == 'First') page = 1;
-    else if ($(this).text() == 'Last') page = lastPage;
+    let newPage;
+    //check if page is current page 
+
+
+    if ($(this).text() == 'First') newPage = 1;
+    else if ($(this).text() == 'Last') newPage = lastPage;
     else
-        page = $(this).text();
-    loadProducts();
+        newPage = $(this).text();
+    if (newPage != page) {
+        page = newPage;
+        loadProducts();
+    }
 })
 
 
@@ -137,7 +181,9 @@ function loadProducts(){
         data: {
             page,
             taking,
+            search,
             orderBy,
+            isDesc,
             categories,
             brands,
             colors,

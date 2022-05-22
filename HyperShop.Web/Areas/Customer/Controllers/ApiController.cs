@@ -18,14 +18,15 @@ namespace HyperShop.Web.Areas.Customer.Controllers
             _context = context;
         }
 
-        public IActionResult Products(int page,int taking, string orderBy, List<int> categories, List<int> brands, List<int> colors, List<string> shoesHeights, List<string> closureTypes, List<string> genders)
+        public IActionResult Products(int page,int taking, string search, string orderBy,bool isDesc, List<int> categories, List<int> brands, List<int> colors, List<string> shoesHeights, List<string> closureTypes, List<string> genders)
         {
             if (page == 0) page = 1;
             if (taking == 0) taking = 12;
             if (orderBy == null) orderBy = "PublishedDate";
 
-            IEnumerable<Product> products = _context.Products;
+            IQueryable<Product> products = _context.Products;
 
+            if (search != null && search !="") products = products.Where(p => p.Name.Contains(search));
             if (categories != null && categories.Count>0) products = products.Where(p => categories.Contains(p.CategoryId.Value));
             if (brands != null && brands.Count > 0) products = products.Where(p => brands.Contains(p.BrandId.Value));
             if (shoesHeights != null && shoesHeights.Count > 0) products = products.Where(p => shoesHeights.Contains(p.ShoesHeight));
@@ -35,24 +36,43 @@ namespace HyperShop.Web.Areas.Customer.Controllers
 
             int productsCount = products.Count();
 
-            products = products.OrderBy(p => p.GetType().GetProperty(orderBy).GetValue(p))
+            if(orderBy=="Name")
+            {
+                if (isDesc) products = products.OrderByDescending(p => p.Name);
+                else products = products.OrderBy(p => p.Name);
+
+            }
+            else if( orderBy == "Price")
+            {
+                if (isDesc) products = products.OrderByDescending(p => p.Price);
+                else products = products.OrderBy(p => p.Price);
+            }
+            else if (orderBy == "PublishedDate")
+            {
+                if (isDesc) products = products.OrderByDescending(p => p.PublishedDate);
+                else products = products.OrderBy(p => p.PublishedDate);
+            }
+
+
+            //Linq cant translate this to sql, cant load before order due to performance
+            //if (isDesc) products = products.OrderByDescending(p => p.GetType().GetProperty(orderBy).GetValue(p));
+            //else products = products.OrderBy(p => p.GetType().GetProperty(orderBy).GetValue(p));
+
+            var pagedProducts = products.ToList()
                 .Skip(taking * (page - 1))
                 .Take(taking);
 
-            var productList = products
-                .Select(p=> new { 
-                    Id=p.Id,
-                    Name=p.Name,
+            var productList = pagedProducts
+                .Select(p => new {
+                    Id = p.Id,
+                    Name = p.Name,
                     Price = p.Price,
                     PrimaryImage = p.PrimaryImage,
-                    ColorCount= _context.Stock.ToList()
+                    ColorCount = _context.Stock.ToList()
                         .GroupBy(s => new { s.ProductId, s.ColorId })
                         .Where(s => s.Key.ProductId == p.Id)
                         .Count()
-                })
-                .ToList();
-
-
+                });
             return Json(new { productList, productsCount });
         }
         
