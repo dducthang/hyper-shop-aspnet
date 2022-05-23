@@ -1,62 +1,60 @@
 /* HIDE RADIO */
-[name="product-color"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
+[name='colorId'] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-    /* IMAGE STYLES */
-    [name="product-color"] + img {
-        cursor: pointer;
-    }
+/* IMAGE STYLES */
+[name='colorId'] + img {
+  cursor: pointer;
+}
 
-    /* CHECKED STYLES */
-    [name="product-color"]:checked + img {
-        outline: 2px solid #4fbfa8;
-    }
-
+/* CHECKED STYLES */
+[name='colorId']:checked + img {
+  outline: 2px solid #4fbfa8;
+}
 
 .flex-container {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
 }
 
 .longhand {
-    flex-flow: wrap row;
+  flex-flow: wrap row;
 }
 
 .flex-item {
-    color: black;
-    border: 1px solid #e8e8e8;
-    width: 50px;
-    height: 50px;
-    font-size: 1.3em;
-    text-align: center;
-    margin: 2px;
+  color: black;
+  border: 1px solid #e8e8e8;
+  width: 50px;
+  height: 50px;
+  font-size: 1.3em;
+  text-align: center;
+  margin: 2px;
 }
 
 .size-label {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 input:checked + label {
-    background: #4fbfa8;
+  background: #4fbfa8;
 }
 
 input:disabled + label {
-    background: #f7f7f7;
-    color: #dedede;
-    cursor: default
+  background: #f7f7f7;
+  color: #dedede;
+  cursor: default;
 }
 
-
 input {
-    display: none;
+  display: none;
 }

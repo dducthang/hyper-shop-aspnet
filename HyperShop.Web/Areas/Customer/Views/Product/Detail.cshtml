@@ -1,4 +1,5 @@
-﻿@model ProductDetailVM
+﻿@using System.Security.Claims
+@model ProductDetailVM
 @{
     ViewData["Title"] = "Hyper Shop - " + Model.Product.Name;
 }
@@ -41,7 +42,8 @@
                     <h1 class="text-center">@Model.Product.Name</h1>
                     <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product details, material &amp; care and sizing</a></p>
                     <p class="price">@Model.Product.Price.ToString("c")</p>
-                    <p class="text-center buttons"><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</a><a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-heart"></i> Add to wishlist</a></p>
+                    <p class="text-center buttons"><button type="submit" metho form="cart-form" value="Submit" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button><a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-heart"></i> Add to wishlist</a></p>
+                    <form id="cart-form" action="/Customer/Cart/AddToCart" method="post">
                     <div class = "color-pick">
                         <h3 class="mt-3">Choose Color</h3>
                     @for(int i=0;i< Model.Colors.Count;i++)
@@ -49,13 +51,13 @@
                         if (i == 0)
                         {
                             <label>
-                                <input type="radio" name="product-color" checked value="@Model.Colors[i].ColorId">
+                                <input type="radio" name="colorId" checked value="@Model.Colors[i].ColorId">
                                 <img src="@Model.Colors[i].PrimaryImage" width="50">
                             </label>           
                         }
                         else{
                             <label>
-                            <input type="radio" name="product-color" value="@Model.Colors[i].ColorId">
+                            <input type="radio" name="colorId" value="@Model.Colors[i].ColorId">
                             <img src="@Model.Colors[i].PrimaryImage" width="50">
                         </label>  
                         
@@ -68,10 +70,14 @@
                     <ul class="flex-container longhand size-pick">
                                 @foreach (var item in Model.Sizes)
                                 {
-                                    <li class="flex-item"><input disabled id="@item.Id" type="radio" name="radio"><label class="size-label" for="@item.Id">@item.SizeValue</label></li>
+                                    <li class="flex-item"><input disabled id="@item.Id" type="radio" name="sizeId" value="@item.Id"><label class="size-label" for="@item.Id">@item.SizeValue</label></li>
                                 }
                                 </ul>
+                                <input name="userId" hidden value="@User.FindFirstValue(ClaimTypes.NameIdentifier)"/>
+                                <input name="quantity" hidden value="1"/>
+                     </form>
                             </div>
+                    
                 <div data-slider-id="1" class="owl-thumbs">
 
                   </div>

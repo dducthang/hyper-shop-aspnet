@@ -128,7 +128,6 @@ namespace HyperShop.Web.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, SD.Role_User);
                     }
-
                     else
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);

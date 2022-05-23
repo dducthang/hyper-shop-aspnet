@@ -245,7 +245,9 @@ function getProduct(product) {
                       <p class="price">
                         ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}
                       </p>
-                      <p class="buttons"><a href="/Customer/Product/Detail/${product.id}" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
+                      <p class="buttons">
+                        <a href="/Customer/Product/Detail/${product.id}" class="btn btn-outline-secondary">View detail</a>
+                      </p>
                     </div>
                     <!-- /.text-->
     `

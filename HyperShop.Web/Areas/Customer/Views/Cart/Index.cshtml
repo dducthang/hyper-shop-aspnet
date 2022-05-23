@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<CartVM>
+@{
     ViewData["Title"] = "Cart";
 }
 
@@ -19,7 +20,7 @@
               <div class="box">
                 <form method="post" action="checkout1.html">
                   <h1>Shopping cart</h1>
-                  <p class="text-muted">You currently have 3 item(s) in your cart.</p>
+                  <p class="text-muted">You currently have @Model.Count() item(s) in your cart.</p>
                   <div class="table-responsive">
                     <table class="table">
                       <thead>
@@ -32,33 +33,28 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td><a href="#"><img src="img/detailsquare.jpg" alt="White Blouse Armani"></a></td>
-                          <td><a href="#">White Blouse Armani</a></td>
-                          <td>
-                            <input type="number" value="2" class="form-control">
-                          </td>
-                          <td>$123.00</td>
-                          <td>$0.00</td>
-                          <td>$246.00</td>
-                          <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                        </tr>
-                        <tr>
-                          <td><a href="#"><img src="img/basketsquare.jpg" alt="Black Blouse Armani"></a></td>
-                          <td><a href="#">Black Blouse Armani</a></td>
-                          <td>
-                            <input type="number" value="1" class="form-control">
-                          </td>
-                          <td>$200.00</td>
-                          <td>$0.00</td>
-                          <td>$200.00</td>
-                          <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                        </tr>
-                      </tbody>
+                            @{double total=0;}
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                  <td><a href="#"><img src="@item.ProductImage" alt="@item.ProductName"></a></td>
+                                  <td><a href="#">@item.ProductName</a></td>
+                                  <td>
+                                    <input type="number" value="@item.Quantity" class="form-control">
+                                  </td>
+                                  <td>@item.Price.ToString("c")</td>
+                                  <td>$0.00</td>
+                                  <td>@((item.Price*item.Quantity).ToString("c"))</td>
+                                  <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                </tr>  
+                                
+                                <tr @(total += @item.Price*@item.Quantity) )></tr>
+                            }
+                                    </tbody>
                       <tfoot>
                         <tr>
                           <th colspan="5">Total</th>
-                          <th colspan="2">$446.00</th>
+                          <th colspan="2">@total.ToString("c")</th>
                         </tr>
                       </tfoot>
                     </table>

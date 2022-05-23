@@ -24,6 +24,7 @@ namespace HyperShop.DataAccess
         public DbSet<HyperShop.Models.PrimaryImage> PrimaryImages { get; set; }
         public DbSet<HyperShop.Models.SecondaryImage> SecondaryImages { get; set; }
         public DbSet<HyperShop.Models.ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<HyperShop.Models.Cart> Carts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>()
