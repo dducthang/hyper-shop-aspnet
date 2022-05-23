@@ -13,10 +13,13 @@ using Microsoft.AspNetCore.Http;
 using HyperShop.Utility;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using HyperShop.Utility;
 
 namespace HyperShop.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class StockController : Controller
     {
         private readonly ApplicationDbContext _context;

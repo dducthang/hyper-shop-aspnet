@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HyperShop.DataAccess;
 using HyperShop.Models;
+using Microsoft.AspNetCore.Authorization;
+using HyperShop.Utility;
 
 namespace HyperShop.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ColorController : Controller
     {
         private readonly ApplicationDbContext _context;
