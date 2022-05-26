@@ -10,8 +10,10 @@ namespace HyperShop.Models.ViewModels
     {
         public int CartId { get; set; }
         public string ProductName { get; set; }
+        public double Size { get; set; }
         public string ProductImage { get; set; }
         public int Quantity { get; set; }
+        public int StockQuantity { get; set; }
         public double Price { get; set; }
 
 

@@ -42,7 +42,7 @@
                     <h1 class="text-center">@Model.Product.Name</h1>
                     <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product details, material &amp; care and sizing</a></p>
                     <p class="price">@Model.Product.Price.ToString("c")</p>
-                    <p class="text-center buttons"><button type="submit" metho form="cart-form" value="Submit" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button><a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-heart"></i> Add to wishlist</a></p>
+                    <p class="text-center buttons"><button type="submit" form="cart-form" value="Submit" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button><a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-heart"></i> Add to wishlist</a></p>
                     <form id="cart-form" action="/Customer/Cart/AddToCart" method="post">
                     <div class = "color-pick">
                         <h3 class="mt-3">Choose Color</h3>
@@ -74,6 +74,7 @@
                                 }
                                 </ul>
                                 <input name="userId" hidden value="@User.FindFirstValue(ClaimTypes.NameIdentifier)"/>
+                                <input name="productId" hidden value="@Model.Product.Id"/>
                                 <input name="quantity" hidden value="1"/>
                      </form>
                             </div>
@@ -210,4 +211,5 @@
 }
 @section Scripts{
 <script src="~/js/loadStock.js"></script>
+<script src="~/js/addToCart.js"></script>
 }

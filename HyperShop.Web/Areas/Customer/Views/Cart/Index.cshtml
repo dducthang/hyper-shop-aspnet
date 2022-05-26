@@ -18,43 +18,45 @@
             </div>
             <div id="basket" class="col-lg-9">
               <div class="box">
-                <form method="post" action="checkout1.html">
+                <form method="post" action="/Customer/Order/Checkout" class="cart-form">
                   <h1>Shopping cart</h1>
-                  <p class="text-muted">You currently have @Model.Count() item(s) in your cart.</p>
+                  <p class="text-muted">You currently have <span class="item-count"> @Model.Count()</span> <span class="item-count-unit">@(@Model.Count() > 1 ? "items": "item") </span> in your cart.</p>
                   <div class="table-responsive">
                     <table class="table">
                       <thead>
                         <tr>
                           <th colspan="2">Product</th>
+                          <th>Size</th>
                           <th>Quantity</th>
                           <th>Unit price</th>
                           <th>Discount</th>
                           <th colspan="2">Total</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody class="cart-table-body">
                             @{double total=0;}
                             @foreach (var item in Model)
                             {
                                 <tr>
                                   <td><a href="#"><img src="@item.ProductImage" alt="@item.ProductName"></a></td>
                                   <td><a href="#">@item.ProductName</a></td>
+                                  <td>@item.Size</td>
                                   <td>
-                                    <input type="number" value="@item.Quantity" class="form-control">
+                                    <input type="number" min="0" max="@item.StockQuantity" name="@item.CartId" value="@item.Quantity" class="form-control qty-input">
                                   </td>
                                   <td>@item.Price.ToString("c")</td>
                                   <td>$0.00</td>
-                                  <td>@((item.Price*item.Quantity).ToString("c"))</td>
-                                  <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                  <td class = "item-total">@((item.Price*item.Quantity).ToString("c"))</td>
+                                  <td><a href="/Customer/Cart/DeleteItem" id="@item.CartId" class="cart-item-delete"><i class="fa fa-trash-o"></i></a></td>
                                 </tr>  
                                 
                                 <tr @(total += @item.Price*@item.Quantity) )></tr>
                             }
                                     </tbody>
-                      <tfoot>
+                      <tfoot class="cart-table-foot">
                         <tr>
-                          <th colspan="5">Total</th>
-                          <th colspan="2">@total.ToString("c")</th>
+                          <th colspan="6">Total</th>
+                          <th class="cart-total" colspan="2">@total.ToString("c")</th>
                         </tr>
                       </tfoot>
                     </table>
@@ -63,7 +65,7 @@
                   <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
                     <div class="left"><a href="category.html" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
                     <div class="right">
-                      <button class="btn btn-outline-secondary"><i class="fa fa-refresh"></i> Update cart</button>
+                      <button class="btn btn-outline-secondary update-cart-btn" formaction="/Customer/Cart/Update" type="button"><i class="fa fa-refresh"></i> Update cart</button>
                       <button type="submit" class="btn btn-primary">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
                     </div>
                   </div>
@@ -172,3 +174,7 @@
         </div>
       </div>
     </div>
+
+@section Scripts{
+<script src="~/js/updateCart.js"></script>
+}
