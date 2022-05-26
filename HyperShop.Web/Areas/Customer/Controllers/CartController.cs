@@ -98,6 +98,12 @@ namespace HyperShop.Web.Areas.Customer.Controllers
                 {
                     item.Quantity = int.Parse(cartQty[cartIdString]);
                 }
+
+                if (item.Quantity == 0)
+                {
+                    _context.Carts.Remove(item);
+                    cartItems.Remove(item);
+                }
             }
             _context.SaveChanges();
             List<CartVM> res = cartItems

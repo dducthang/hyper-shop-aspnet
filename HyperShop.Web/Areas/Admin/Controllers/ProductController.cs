@@ -13,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using HyperShop.Utility;
 
 namespace HyperShop.Web.Areas.Admin.Controllers
 {

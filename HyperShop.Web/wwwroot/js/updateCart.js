@@ -1,4 +1,4 @@
-$('.cart-item-delete').on('click', function (e) {
+$('.cart-table-body').on('click','.cart-item-delete', function (e) {
     e.preventDefault()
     e.stopPropagation()
     const element = $(this)
@@ -38,28 +38,24 @@ $('.cart-item-delete').on('click', function (e) {
 $('.update-cart-btn').on('click', function (e) {
     e.preventDefault
     e.stopPropagation
-    form = $('.cart-form')
-    data = form.serialize()
-    url = $(this).attr('formaction')
-    $.ajax({
-        url,
-        data,
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            $('.cart-table-body').html(getCartTableBody(data))
-            $('.cart-total').text(getTotal(data))
-            
-        },
-        error: function (err) {
-            console.log(err)
-        }
-    })
+    updateCart()
 })
 
-function getCartTableBody(items) {
-    let res = ``;
+
+
+$('.cart-table-body').on('change','.qty-input', function () {
+    isCartChanged = true;
+})
+
+
+
+
+
+function getCart(items) {
+    let table = ``;
+    let total = 0;
     for (item of items) {
-        res += `
+        table += `
         <tr>
             <td><a href="#"><img src="${item.productImage}" alt="${item.productName}"></a></td>
             <td><a href="#">${item.productName}</a></td>
@@ -70,17 +66,44 @@ function getCartTableBody(items) {
             <td>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.price)}</td>
             <td>$0.00</td>
             <td class = "item-total">${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((item.price * item.quantity))}</td>
-            <td><a href="/Customer/Cart/DeleteItem" id="${item.CartId}" class="cart-item-delete"><i class="fa fa-trash-o"></i></a></td>
+            <td><a href="/Customer/Cart/DeleteItem" id="${item.cartId}" class="cart-item-delete"><i class="fa fa-trash-o"></i></a></td>
         </tr>
 `
-    }
-    return res;
-}
-
-function getTotal(items) {
-    let total = 0;
-    for (item of items) {
         total += item.price * item.quantity;
     }
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((total));
+    return {
+        table, total: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((total))
+    };
+}
+
+function updateCart() {
+    form = $('.cart-form')
+    data = form.serialize()
+    url = $('.update-cart-btn').attr('formaction')
+    $.ajax({
+        url,
+        data,
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            res = getCart(data)
+            $('.item-count').text(data.length)
+            $('.item-count-unit').text(data.length > 1 ? "items" : "item");
+            $('.cart-table-body').html(res.table)
+            $('.cart-total').text(res.total)
+            isCartChanged = false
+
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+
+function checkCartChanged() {
+    if (isCartChanged) {
+        Swal.fire('Check your updated cart first');
+        updateCart()
+        return false
+    }
+    return true
 }
