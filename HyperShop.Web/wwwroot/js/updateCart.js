@@ -2,19 +2,19 @@ $('.cart-table-body').on('click','.cart-item-delete', function (e) {
     e.preventDefault()
     e.stopPropagation()
     const element = $(this)
-    const cartId = element.attr('id')
+    const stockId = element.attr('id')
     const url = element.attr('href')
 
     
     $.ajax({
         url,
         data: {
-            cartId
+            stockId
         },
         success: function (data) {
 
             //update total
-            const priceSub = Number($('#'+cartId).parent().siblings(".item-total").text().replace(/[^0-9.-]+/g, ""))
+            const priceSub = Number($('#'+stockId).parent().siblings(".item-total").text().replace(/[^0-9.-]+/g, ""))
             let total = Number($('.cart-total').text().replace(/[^0-9.-]+/g, ""))
             total = total - priceSub
             total = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total)
@@ -61,12 +61,12 @@ function getCart(items) {
             <td><a href="#">${item.productName}</a></td>
             <td>${item.size}</td>
             <td>
-            <input type="number" min="0" max="${item.stockQuantity}" name="${item.cartId}" value="${item.quantity}" class="form-control qty-input">
+            <input type="number" min="0" max="${item.stockQuantity}" name="${item.stockId}" value="${item.quantity}" class="form-control qty-input">
             </td>
             <td>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.price)}</td>
             <td>$0.00</td>
             <td class = "item-total">${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((item.price * item.quantity))}</td>
-            <td><a href="/Customer/Cart/DeleteItem" id="${item.cartId}" class="cart-item-delete"><i class="fa fa-trash-o"></i></a></td>
+            <td><a href="/Customer/Cart/DeleteItem" id="${item.stockId}" class="cart-item-delete"><i class="fa fa-trash-o"></i></a></td>
         </tr>
 `
         total += item.price * item.quantity;

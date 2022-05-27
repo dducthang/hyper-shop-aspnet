@@ -40,6 +40,7 @@ namespace HyperShop
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSession();
             services.AddRazorPages();
         }
 
@@ -59,6 +60,7 @@ namespace HyperShop
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

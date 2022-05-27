@@ -43,12 +43,12 @@
                                   <td><a href="#">@item.ProductName</a></td>
                                   <td>@item.Size</td>
                                   <td>
-                                    <input type="number" min="0" max="@item.StockQuantity" name="@item.CartId" value="@item.Quantity" class="form-control qty-input">
+                                    <input type="number" min="0" max="@item.StockQuantity" name="@item.StockId" value="@item.Quantity" class="form-control qty-input">
                                   </td>
                                   <td>@item.Price.ToString("c")</td>
                                   <td>$0.00</td>
                                   <td class = "item-total">@((item.Price*item.Quantity).ToString("c"))</td>
-                                  <td><a href="/Customer/Cart/DeleteItem" id="@item.CartId" class="cart-item-delete"><i class="fa fa-trash-o"></i></a></td>
+                                  <td><a href="/Customer/Cart/DeleteItem" id="@item.StockId" class="cart-item-delete"><i class="fa fa-trash-o"></i></a></td>
                                 </tr>  
                                 
                                 <tr @(total += @item.Price*@item.Quantity) )></tr>

@@ -16,6 +16,10 @@ namespace HyperShop.Models.ViewModels
         public int StockQuantity { get; set; }
         public double Price { get; set; }
 
+        //for anonymous cart
+        public int StockId { get; set; }
+
+
 
     }
 }

@@ -11,6 +11,13 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using HyperShop.DataAccess;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using HyperShop.Models.ViewModels;
+using HyperShop.Models;
+using System.Security.Claims;
+using HyperShop.Utility;
 
 namespace HyperShop.Web.Areas.Identity.Pages.Account
 {
@@ -18,16 +25,18 @@ namespace HyperShop.Web.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ApplicationDbContext _context;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, 
+        public LoginModel(SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         [BindProperty]
@@ -85,6 +94,38 @@ namespace HyperShop.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    //merge cart
+                    var user = _context.ApplicationUsers.First(u => u.Email == Input.Email);
+                    string userId = user.Id;
+                    var role = (await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(Input.Email)))[0];
+                    string temp = HttpContext.Session.GetString("cart");
+                    if (role == SD.Role_User && !string.IsNullOrEmpty(temp))
+                    {
+                        List<CartVM> items = JsonConvert.DeserializeObject<List<CartVM>>(temp);
+                        List<Cart> itemsInDb = _context.Carts.Where(c => c.UserId == userId).ToList();
+                        foreach (var item in items)
+                        {
+                            Cart itemInDb = itemsInDb.FirstOrDefault(i => i.StockId == item.StockId);
+                            if (itemInDb == null)
+                            {
+                                var newCartItem = new Cart()
+                                {
+                                    Quantity = item.Quantity,
+                                    UserId = userId,
+                                    StockId = item.StockId,
+                                };
+                                _context.Carts.Add(newCartItem);
+                            }
+                            else
+                            {
+                                itemInDb.Quantity +=  item.Quantity;
+                            }
+                            
+                        }
+                        _context.SaveChanges();
+                    }
+                    HttpContext.Session.Remove("cart");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

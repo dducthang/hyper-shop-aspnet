@@ -73,7 +73,6 @@
                                     <li class="flex-item"><input disabled id="@item.Id" type="radio" name="sizeId" value="@item.Id"><label class="size-label" for="@item.Id">@item.SizeValue</label></li>
                                 }
                                 </ul>
-                                <input name="userId" hidden value="@User.FindFirstValue(ClaimTypes.NameIdentifier)"/>
                                 <input name="productId" hidden value="@Model.Product.Id"/>
                                 <input name="quantity" hidden value="1"/>
                      </form>
