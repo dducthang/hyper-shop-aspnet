@@ -23,8 +23,11 @@ namespace HyperShop.DataAccess
         public DbSet<HyperShop.Models.Stock> Stock { get; set; }
         public DbSet<HyperShop.Models.PrimaryImage> PrimaryImages { get; set; }
         public DbSet<HyperShop.Models.SecondaryImage> SecondaryImages { get; set; }
+        public DbSet<HyperShop.Models.City> Cities { get; set; }
         public DbSet<HyperShop.Models.ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<HyperShop.Models.Cart> Carts { get; set; }
+        public DbSet<HyperShop.Models.Order> Orders { get; set; }
+        public DbSet<HyperShop.Models.OrderDetail> OrderDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>()
@@ -37,9 +40,14 @@ namespace HyperShop.DataAccess
                 .WithOne(p => p.Brand)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Order>()
+                .HasOne<City>()
+                .WithMany()
+                .HasForeignKey(o=>o.CityName)
+                .OnDelete(DeleteBehavior.NoAction);
 
 
-            base.OnModelCreating(modelBuilder);
+                base.OnModelCreating(modelBuilder);
         }
     }
 }

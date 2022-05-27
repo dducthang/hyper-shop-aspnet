@@ -15,7 +15,7 @@ namespace HyperShop.Models
         [Required]
         public string StreetAddress { get; set; }
         [Required]
-        public string State { get; set; }
+        public string District { get; set; }
         [Required]
         public string City { get; set; }
 

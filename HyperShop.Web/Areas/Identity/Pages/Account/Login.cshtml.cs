@@ -114,6 +114,7 @@ namespace HyperShop.Web.Areas.Identity.Pages.Account
                                     Quantity = item.Quantity,
                                     UserId = userId,
                                     StockId = item.StockId,
+                                    Price = item.Price
                                 };
                                 _context.Carts.Add(newCartItem);
                             }

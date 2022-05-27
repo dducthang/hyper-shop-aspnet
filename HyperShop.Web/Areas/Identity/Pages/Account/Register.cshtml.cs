@@ -73,7 +73,7 @@ namespace HyperShop.Web.Areas.Identity.Pages.Account
             [Display(Name = "Street Address")]
             public string StreetAddress { get; set; }
             [Required]
-            public string State { get; set; }
+            public string District { get; set; }
             [Required]
             public string City { get; set; }
             [Required]
@@ -117,7 +117,7 @@ namespace HyperShop.Web.Areas.Identity.Pages.Account
                     FullName = Input.FullName,
                     City = Input.City,
                     StreetAddress = Input.StreetAddress,
-                    State = Input.State
+                    District = Input.District
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

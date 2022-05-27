@@ -4,14 +4,16 @@ using HyperShop.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HyperShop.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220406021756_AddNameAndPhoneColumnToOrderTable")]
+    partial class AddNameAndPhoneColumnToOrderTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,9 +43,6 @@ namespace HyperShop.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -79,19 +78,6 @@ namespace HyperShop.DataAccess.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("HyperShop.Models.City", b =>
-                {
-                    b.Property<string>("CityName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("ShipCost")
-                        .HasColumnType("float");
-
-                    b.HasKey("CityName");
-
-                    b.ToTable("Cities");
-                });
-
             modelBuilder.Entity("HyperShop.Models.Color", b =>
                 {
                     b.Property<int>("Id")
@@ -115,8 +101,8 @@ namespace HyperShop.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CityName")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
@@ -143,14 +129,9 @@ namespace HyperShop.DataAccess.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityName");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -171,8 +152,8 @@ namespace HyperShop.DataAccess.Migrations
                     b.Property<int>("StockId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
+                    b.Property<int>("Total")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -565,22 +546,6 @@ namespace HyperShop.DataAccess.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("Stock");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HyperShop.Models.Order", b =>
-                {
-                    b.HasOne("HyperShop.Models.City", null)
-                        .WithMany()
-                        .HasForeignKey("CityName")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("HyperShop.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });

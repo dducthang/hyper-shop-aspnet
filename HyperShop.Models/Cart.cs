@@ -17,6 +17,8 @@ namespace HyperShop.Models
         public int StockId { get; set; }
         [ValidateNever]
         public Stock Stock { get; set; }
+        public double Price { get; set; }
+
 
 
     }

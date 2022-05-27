@@ -18,7 +18,7 @@
             </div>
             <div id="basket" class="col-lg-9">
               <div class="box">
-                <form method="post" action="/Customer/Order/Checkout" class="cart-form">
+                <form method="get" action="/Customer/Cart/Checkout" class="cart-form">
                   <h1>Shopping cart</h1>
                   <p class="text-muted">You currently have <span class="item-count"> @Model.Count()</span> <span class="item-count-unit">@(@Model.Count() > 1 ? "items": "item") </span> in your cart.</p>
                   <div class="table-responsive">
