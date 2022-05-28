@@ -1,6 +1,7 @@
 ﻿using HyperShop.DataAccess;
 using HyperShop.Models;
 using HyperShop.Models.ViewModels;
+using HyperShop.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -113,6 +114,7 @@ namespace HyperShop.Web.Areas.Customer.Controllers
             var order = JsonConvert.DeserializeObject<Order>(orderString);
             order.ShipCost = _context.Cities.First(c => c.CityName == order.CityName).ShipCost;
             order.UserId = userId;
+            order.Status = SD.Status_Prepare;
             _context.Orders.Add(order);
             _context.SaveChanges();
             List<Cart> itemsInCart = _context.Carts.Where(c => c.UserId == userId).ToList();
@@ -122,7 +124,8 @@ namespace HyperShop.Web.Areas.Customer.Controllers
                     OrderId= order.Id,
                     StockId=c.StockId,
                     Quantity=c.Quantity,
-                    Total = c.Price*c.Quantity
+                    Total = c.Price*c.Quantity,
+                    PricePerUnit = c.Price
                 })
                 .ToList();
             double total = 0;
@@ -142,7 +145,6 @@ namespace HyperShop.Web.Areas.Customer.Controllers
                 string invalidItemsString = string.Join(", ", invalidItems);
                 string nof = (invalidItems.Count > 1 ? "Items number"  : "Item number") + invalidItemsString + " in cart is not sufficient to serve";
                 TempData["error"] = nof;
-                //_context.Orders.Remove(order);
 
                 //not update qty to stock
                 _context.ChangeTracker.Clear();
@@ -155,7 +157,7 @@ namespace HyperShop.Web.Areas.Customer.Controllers
             _context.OrderDetails.AddRange(items);
             _context.Carts.RemoveRange(itemsInCart);
             _context.SaveChanges();
-            return Ok();
+            return RedirectToAction("Index", "Order");
 
         }
 

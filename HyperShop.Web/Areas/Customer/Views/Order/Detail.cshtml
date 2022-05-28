@@ -1,0 +1,100 @@
+﻿@model OrderVM
+@{
+    ViewData["Title"] = "Order Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+  <div id="all">
+      <div id="content">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <!-- breadcrumb-->
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li aria-current="page" class="breadcrumb-item"><a href="#">My orders</a></li>
+                  <li aria-current="page" class="breadcrumb-item active">Order # 1735</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-lg-3">
+              <!--
+              *** CUSTOMER MENU ***
+              _________________________________________________________
+              -->
+              <div class="card sidebar-menu">
+                <div class="card-header">
+                  <h3 class="h4 card-title">Customer section</h3>
+                </div>
+                <div class="card-body">
+                  <ul class="nav nav-pills flex-column"><a href="customer-orders.html" class="nav-link active"><i class="fa fa-list"></i> My orders</a><a href="customer-wishlist.html" class="nav-link"><i class="fa fa-heart"></i> My wishlist</a><a href="customer-account.html" class="nav-link"><i class="fa fa-user"></i> My account</a><a href="index.html" class="nav-link"><i class="fa fa-sign-out"></i> Logout</a></ul>
+                </div>
+              </div>
+              <!-- /.col-lg-3-->
+              <!-- *** CUSTOMER MENU END ***-->
+            </div>
+            <div id="customer-order" class="col-lg-9">
+              <div class="box">
+                <h1>Order #@Model.OrderId</h1>
+                <p class="lead">Order #@Model.OrderId was placed on <strong>@Model.OrderDate.ToShortDateString()</strong> and is currently <strong>@Model.Status</strong>.</p>
+                <hr>
+                <div class="table-responsive mb-4">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th colspan="2">Product</th>
+                        <th>Quantity</th>
+                        <th>Unit price</th>
+                        <th>Discount</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach (var item in Model.Items)
+                     {
+                         <tr>
+                        <td><a asp-action="Detail" asp-controller="Product" asp-route-id="@item.ProductId"><img src="@item.Image" alt="@item.ProductName"></a></td>
+                        <td><a asp-action="Detail" asp-controller="Product" asp-route-id="@item.ProductId">@item.ProductName</a></td>
+                        <td>@item.Quantity</td>
+                        <td>@item.PricePerUnit.ToString("c")</td>
+                        <td>$0.00</td>
+                        <td>@item.Total.ToString("c")</td>
+                      </tr>
+                     }
+                      
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th colspan="5" class="text-right">Order subtotal</th>
+                        <th>@Model.Total.ToString("c")</th>
+                      </tr>
+                      <tr>
+                        <th colspan="5" class="text-right">Shipping and handling</th>
+                        <th>@Model.ShipCost.ToString("c")</th>
+                      </tr>
+                      <tr>
+                        <th colspan="5" class="text-right">Tax</th>
+                        <th>$0.00</th>
+                      </tr>
+                      <tr>
+                        <th colspan="5" class="text-right">Total</th>
+                        <th>@((Model.Total+Model.ShipCost).ToString("c"))</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <!-- /.table-responsive-->
+                <div class="row addresses">
+                  <div class="col-lg-12">
+                    <h2>Shipping address</h2>
+                    <p>@Model.Name<br>@Model.StreetAddress<br>@Model.District<br>@Model.City<br></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
