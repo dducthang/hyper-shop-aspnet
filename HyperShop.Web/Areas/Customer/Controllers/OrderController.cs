@@ -1,5 +1,6 @@
 ﻿using HyperShop.DataAccess;
 using HyperShop.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 namespace HyperShop.Web.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;

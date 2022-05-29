@@ -44,6 +44,7 @@
                     <thead>
                       <tr>
                         <th colspan="2">Product</th>
+                        <th>Size</th>
                         <th>Quantity</th>
                         <th>Unit price</th>
                         <th>Discount</th>
@@ -56,6 +57,7 @@
                          <tr>
                         <td><a asp-action="Detail" asp-controller="Product" asp-route-id="@item.ProductId"><img src="@item.Image" alt="@item.ProductName"></a></td>
                         <td><a asp-action="Detail" asp-controller="Product" asp-route-id="@item.ProductId">@item.ProductName</a></td>
+                        <td>@item.Size</td>
                         <td>@item.Quantity</td>
                         <td>@item.PricePerUnit.ToString("c")</td>
                         <td>$0.00</td>
@@ -66,19 +68,15 @@
                     </tbody>
                     <tfoot>
                       <tr>
-                        <th colspan="5" class="text-right">Order subtotal</th>
+                        <th colspan="6" class="text-right">Order subtotal</th>
                         <th>@Model.Total.ToString("c")</th>
                       </tr>
                       <tr>
-                        <th colspan="5" class="text-right">Shipping and handling</th>
+                        <th colspan="6" class="text-right">Shipping and handling</th>
                         <th>@Model.ShipCost.ToString("c")</th>
                       </tr>
                       <tr>
-                        <th colspan="5" class="text-right">Tax</th>
-                        <th>$0.00</th>
-                      </tr>
-                      <tr>
-                        <th colspan="5" class="text-right">Total</th>
+                        <th colspan="6" class="text-right">Total</th>
                         <th>@((Model.Total+Model.ShipCost).ToString("c"))</th>
                       </tr>
                     </tfoot>

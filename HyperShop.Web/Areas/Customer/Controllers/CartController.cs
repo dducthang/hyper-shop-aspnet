@@ -58,7 +58,26 @@ namespace HyperShop.Web.Areas.Customer.Controllers
         [Authorize]
         public IActionResult Checkout()
         {
-            var order = new Order();
+            var user = _context.ApplicationUsers.First(u=>u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            Order order;
+            string temp = HttpContext.Session.GetString("order");
+            if (temp != null)
+            {
+                order = JsonConvert.DeserializeObject<Order>(temp);
+            }
+            else
+            {
+                order = new Order()
+                {
+                    Name = user.FullName,
+                    Phone = user.PhoneNumber,
+                    StreetAddress = user.StreetAddress,
+                    District = user.District,
+                    CityName = user.City
+                
+                };
+            }
             ViewBag.Cities = _context.Cities.Select(s => new SelectListItem
             {
                 Value = s.CityName,
@@ -157,6 +176,7 @@ namespace HyperShop.Web.Areas.Customer.Controllers
             _context.OrderDetails.AddRange(items);
             _context.Carts.RemoveRange(itemsInCart);
             _context.SaveChanges();
+            HttpContext.Session.Remove("order");
             return RedirectToAction("Index", "Order");
 
         }
