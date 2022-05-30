@@ -55,6 +55,6 @@ input:disabled + label {
   cursor: default;
 }
 
-input {
-  display: none;
+.size-input {
+    display: none;
 }

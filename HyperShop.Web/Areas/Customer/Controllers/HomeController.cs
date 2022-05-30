@@ -22,6 +22,7 @@ namespace HyperShop.Web.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 

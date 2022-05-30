@@ -20,7 +20,7 @@
               </nav>
             </div>
 
-            <div class="col-lg-12 order-1 order-lg-2">
+            <div class="col-lg-12">
               <div id="productMain" class="row">
                 <div class="col-md-6 product-carousel">
                   <div data-slider-id="1" class="owl-carousel shop-detail-carousel">
@@ -70,7 +70,7 @@
                     <ul class="flex-container longhand size-pick">
                                 @foreach (var item in Model.Sizes)
                                 {
-                                    <li class="flex-item"><input disabled id="@item.Id" type="radio" name="sizeId" value="@item.Id"><label class="size-label" for="@item.Id">@item.SizeValue</label></li>
+                                    <li class="flex-item"><input disabled id="@item.Id" type="radio" class="size-input" name="sizeId" value="@item.Id"><label class="size-label" for="@item.Id">@item.SizeValue</label></li>
                                 }
                                 </ul>
                                 <input name="productId" hidden value="@Model.Product.Id"/>
@@ -199,6 +199,181 @@
                   <!-- /.product-->
                 </div>
               </div>
+
+
+              <div class="feedback">
+  <span class="medium-text">Product review and feedback</span>
+  <div class="divide"></div>
+  <div class="comments-list">
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">13</span>
+      </div>
+      
+      
+      <div class="divide"></div>
+    </div>
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">14</span>
+      </div>
+      
+      
+      <div class="divide"></div>
+    </div>
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">15</span>
+      </div>
+      
+      
+      <div class="divide"></div>
+    </div>
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">16</span>
+      </div>
+      
+      
+      <div class="divide"></div>
+    </div>
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">17</span>
+      </div>
+      
+      
+      <div class="divide"></div>
+    </div>
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">18</span>
+      </div>
+      
+      
+      <div class="divide"></div>
+    </div>
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">19</span>
+      </div>
+      
+      
+      <div class="divide"></div>
+    </div>
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">20</span>
+      </div>
+      
+      
+      <div class="divide"></div>
+    </div>
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">21</span>
+      </div>
+      
+      
+      <div class="divide"></div>
+    </div>
+    
+    <div class="comment">
+      <div class="customer-avatar">
+        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>lam</span>
+      </div>
+      <div class="comment-content">
+        <span class="light-gray-color">ay yo</span>
+      </div>
+      
+      <div class="comment-response">
+        <div class="arrow"></div>
+        <div class="customer-avatar">
+            <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>tung</span>
+        </div>
+        <div class="small-text black-color">
+            ádsadsad
+        </div>
+    </div>
+    <form class="response-form" action="/api/response/61c4a5377073a9cdc4d2d8b4" method="post" autocomplete="off">
+      <input type="text" class="rep-comment" name="response" placeholder="Reply comment .....">
+      <button hidden></button>
+    </form>
+      <div class="divide"></div>
+    </div>
+    
+  </div>
+
+  <div class="pages">
+    <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+      
+      <ul class="pagination">
+        <li class="page-item cursor-pointer"><a class="page-link">First</a></li>
+           
+        <li class="page-item cursor-pointer active">
+          <a class="page-link">1</a>
+        </li>
+           
+        <li class="page-item cursor-pointer">
+          <a class="page-link">2</a>
+        </li>
+           
+        <li class="page-item cursor-pointer">
+          <a class="page-link">3</a>
+        </li>
+           
+        <li>
+          <a class="page-link cursor-pointer" id="3">Last</a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+
+  <form class="comment-form" action="/api/comments/6191cecfc28726bfbcab0e14" method="post">
+    <div class="add-comment">
+      <input type="text" name="comment" class="comment-input mb-3" placeholder="leave a comment....." autocomplete="off">
+    </div>
+    <button class="btn btn-info comment-button">Post</button>
+  </form>
+</div>
             </div>
             <!-- /.col-md-9-->
           </div>

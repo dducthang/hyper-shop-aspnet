@@ -29,6 +29,7 @@ namespace HyperShop.Web.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             List<CartVM> items = new List<CartVM>();
             if (userId == null)
