@@ -278,6 +278,12 @@
     <link rel="stylesheet" type="text/css" href="/css/image.radio.css">
 }
 @section Scripts{
+    <script type="text/javascript">
+        const productId = @Model.Product.Id
+        let taking = 7;
+        let page = 1;
+        let lastPage;        
+    </script>
 <script src="~/js/loadStock.js"></script>
 <script src="~/js/addToCart.js"></script>
 <script src="~/js/comment.js"></script>
