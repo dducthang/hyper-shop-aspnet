@@ -26,6 +26,17 @@ $('.comment-form').on('submit', function (e) {
             page = 1;
             loadComments();
             $('.comment-input').val('');
+        },
+        error: function (err) {
+            if (err.status = 401)
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Please login!'
+                });
+            else Swal.fire({
+                icon: 'error',
+                text: 'Something wrong'
+            });
         }
     })
 
@@ -69,7 +80,15 @@ $('.comments-list').on('submit', '.response-form', function (e) {
             $('.rep-comment').val('');
         },
         error: function (err) {
-            console.log(err)
+            if (err.status = 401)
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Please login!'
+                });
+            else Swal.fire({
+                icon: 'error',
+                text: 'Something wrong'
+            });
         }
     })
 })
