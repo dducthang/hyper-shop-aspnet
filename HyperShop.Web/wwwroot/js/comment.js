@@ -3,6 +3,9 @@
 });
 
 
+//---------comment---------------
+
+//post comment
 $('.comment-form').on('submit', function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -29,6 +32,7 @@ $('.comment-form').on('submit', function (e) {
 
 })
 
+//comment paging
 $('.pages').on('click', '.page-item', function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -45,6 +49,33 @@ $('.pages').on('click', '.page-item', function (e) {
         loadComments();
     }
 })
+
+//-------------------------------
+
+//---------response--------------
+$('.comments-list').on('submit', '.response-form', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const form = $(this);
+    const data = form.serialize();
+    const url = form.attr('action');
+
+    $.ajax({
+        url,
+        data,
+        method: 'post',
+        success: function (data) {
+            form.prev('.responses').append(getNewResponse(data))
+            $('.rep-comment').val('');
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+})
+
+//-------------------------------
+
 
 
 
@@ -67,7 +98,7 @@ function loadComments() {
                         
         },
         error: function (err) {
-            console.log("failed")
+            console.log(err)
 
         }
     })
@@ -83,36 +114,63 @@ function getCommentList(comments) {
       </div>
       <div class="comment-content">
         <span class="light-gray-color">${comment.body}</span>
-      </div>
-    <form class="response-form" action="/api/response/" method="post" autocomplete="off">
-      <input type="text" class="rep-comment" name="response" placeholder="Reply comment .....">
-      <button hidden></button>
+      </div>`
+        res += getResponses(comment.responses);
+        res += `
+    <form class="response-form" action="/customer/response/post" method="post" autocomplete="off">
+      <input type="text" class="rep-comment" name="body" placeholder="Reply comment .....">
+      <input hidden name="commentId" value="${comment.id}">
+      <button type="submit" hidden></button>
     </form>
       <div class="divide"></div>
     </div>
     `
+
     }
 
     return res
 }
 
-function getComment(comment) {
-    return`
-     <div class="comment">
-      <div class="customer-avatar">
-        <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>${comment.applicationUser.fullName}</span>
-      </div>
-      <div class="comment-content">
-        <span class="light-gray-color">${comment.body}</span>
-      </div>
-    <form class="response-form" action="/api/response/" method="post" autocomplete="off">
-      <input type="text" class="rep-comment" name="response" placeholder="Reply comment .....">
-      <button hidden></button>
-    </form>
-      <div class="divide"></div>
+
+function getResponses(responses) {
+    let res = `<div class = "responses">`;
+    for (response of responses) {
+        res += `
+     
+          <div class="response">
+        <div class="arrow"></div>
+        <div class="customer-avatar">
+            <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>${response.applicationUser.fullName}</span>
+        </div>
+        <div class="small-text black-color">
+            ${response.body}
+        </div>
     </div>
+      
     `
+    }
+    res += `</div>`;
+
+    return res
 }
+
+function getNewResponse(response) {
+    return`
+     
+          <div class="response">
+        <div class="arrow"></div>
+        <div class="customer-avatar">
+            <i class="far fa-user-circle medium-text"></i>&nbsp; &nbsp;<span>${response.applicationUser.fullName}</span>
+        </div>
+        <div class="small-text black-color">
+            ${response.body}
+        </div>
+    </div>
+      
+`
+}
+
+
 
 function getPagesNumber(lastPage, page) {
     let res = `

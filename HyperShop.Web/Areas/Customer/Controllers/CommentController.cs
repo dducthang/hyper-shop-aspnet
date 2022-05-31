@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HyperShop.Web.Areas.Customer.Controllers
 {
-    [Authorize]
+
     [Area("Customer")]
     public class CommentController : Controller
     {
@@ -20,7 +22,7 @@ namespace HyperShop.Web.Areas.Customer.Controllers
         }
 
         #region API CALLS
-
+        [Authorize]
         [HttpPost]
         public IActionResult Post(int productId, string body)
         {
@@ -43,9 +45,12 @@ namespace HyperShop.Web.Areas.Customer.Controllers
                 .OrderByDescending(c=>c.PostedDate)
                 .Skip(taking*(page-1)).Take(taking)
                 .Include(c=>c.ApplicationUser)
+                .Include(c=>c.Responses)
                 .ToList();
 
             comments.Reverse();
+
+            
             return Json(new
             {
                 comments = comments,

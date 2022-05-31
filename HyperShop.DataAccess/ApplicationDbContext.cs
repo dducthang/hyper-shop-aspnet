@@ -29,6 +29,7 @@ namespace HyperShop.DataAccess
         public DbSet<HyperShop.Models.Order> Orders { get; set; }
         public DbSet<HyperShop.Models.OrderDetail> OrderDetails { get; set; }
         public DbSet<HyperShop.Models.Comment> Comments { get; set; }
+        public DbSet<HyperShop.Models.Response> Responses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>()
